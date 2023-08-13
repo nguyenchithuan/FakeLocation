@@ -13,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import edu.wkd.fakelocation.R;
 import edu.wkd.fakelocation.api.ApiService;
-import edu.wkd.fakelocation.models.postdata.DataLogin;
-import edu.wkd.fakelocation.models.response.ResponseLogin;
+import edu.wkd.fakelocation.models.request.LoginRequest;
+import edu.wkd.fakelocation.models.response.LoginResponse;
 import edu.wkd.fakelocation.util.CustomProgressDialog;
 import edu.wkd.fakelocation.util.Utit;
 import retrofit2.Call;
@@ -61,27 +61,27 @@ public class LoginActivity extends AppCompatActivity {
     private void loginApp() {
         String strEmail = ed_email.getText().toString().trim();
         String strPassword = ed_password.getText().toString().trim();
-        DataLogin dataLogin = new DataLogin(strEmail, strPassword);
+        LoginRequest dataLogin = new LoginRequest(strEmail, strPassword);
         dialog.show();
 
-        ApiService.apiService.login(dataLogin).enqueue(new Callback<ResponseLogin>() {
+        ApiService.apiService.login(dataLogin).enqueue(new Callback<LoginResponse>() {
             @Override
-            public void onResponse(Call<ResponseLogin> call, Response<ResponseLogin> response) {
-                ResponseLogin responseLogin = response.body();
-                Utit.TOKEN = responseLogin.getToken(); // Set data vào token để ở đâu cx có thể sử dụng
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                LoginResponse loginResponse = response.body();
+                Utit.TOKEN = loginResponse.getToken(); // Set data vào token để ở đâu cx có thể sử dụng
                 if (Utit.TOKEN != null) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finishAffinity();
                 } else {
-                    Toast.makeText(LoginActivity.this, responseLogin.getKetqua(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, loginResponse.getKetqua(), Toast.LENGTH_SHORT).show();
                 }
                 dialog.cancel();
-                Log.d(TAG, "onResponse: " + responseLogin);
+                Log.d(TAG, "onResponse: " + loginResponse);
             }
 
             @Override
-            public void onFailure(Call<ResponseLogin> call, Throwable t) {
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
                 Log.d(TAG, "Login: " + t.toString());
                 Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 dialog.cancel();

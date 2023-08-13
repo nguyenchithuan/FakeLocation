@@ -1,8 +1,8 @@
-package edu.wkd.fakelocation.models.postdata;
+package edu.wkd.fakelocation.models.request;
 
 import com.google.gson.annotations.SerializedName;
 
-public class DataRegister {
+public class RegisterRequest {
     @SerializedName("email")
     private String email;
     @SerializedName("user_name")
@@ -10,7 +10,7 @@ public class DataRegister {
     @SerializedName("password")
     private String password;
 
-    public DataRegister(String email, String userName, String password) {
+    public RegisterRequest(String email, String userName, String password) {
         this.email = email;
         this.userName = userName;
         this.password = password;

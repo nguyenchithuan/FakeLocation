@@ -2,7 +2,7 @@ package edu.wkd.fakelocation.models.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ResponseRegister {
+public class RegisterResponse {
     @SerializedName("message")
     private String message;
     @SerializedName("account")

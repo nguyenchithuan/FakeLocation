@@ -2,12 +2,12 @@ package edu.wkd.fakelocation.models.response;
 
 import edu.wkd.fakelocation.models.obj.User;
 
-public class ResponseLogin {
+public class LoginResponse {
     private String ketqua;
     private String token;
     private User user;
 
-    public ResponseLogin(String ketqua, String token, User user) {
+    public LoginResponse(String ketqua, String token, User user) {
         this.ketqua = ketqua;
         this.token = token;
         this.user = user;

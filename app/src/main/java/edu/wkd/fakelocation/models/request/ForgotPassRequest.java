@@ -1,9 +1,9 @@
-package edu.wkd.fakelocation.models.postdata;
+package edu.wkd.fakelocation.models.request;
 
-public class DataForgotPass {
+public class ForgotPassRequest {
     private String email;
 
-    public DataForgotPass(String email) {
+    public ForgotPassRequest(String email) {
         this.email = email;
     }
 

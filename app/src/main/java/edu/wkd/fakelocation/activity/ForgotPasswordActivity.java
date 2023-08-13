@@ -11,8 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import edu.wkd.fakelocation.R;
 import edu.wkd.fakelocation.api.ApiService;
-import edu.wkd.fakelocation.models.postdata.DataForgotPass;
-import edu.wkd.fakelocation.models.response.ResponseForgotPass;
+import edu.wkd.fakelocation.models.request.ForgotPassRequest;
+import edu.wkd.fakelocation.models.response.ForgotPassResponse;
 import edu.wkd.fakelocation.util.CustomProgressDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,20 +39,20 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private void forgotPasswordApp() {
         String strEmail = ed_email.getText().toString().trim();
-        DataForgotPass dataForgotPass = new DataForgotPass(strEmail);
+        ForgotPassRequest dataForgotPass = new ForgotPassRequest(strEmail);
         dialog.show();
 
-        ApiService.apiService.forgetPassword(dataForgotPass).enqueue(new Callback<ResponseForgotPass>() {
+        ApiService.apiService.forgetPassword(dataForgotPass).enqueue(new Callback<ForgotPassResponse>() {
             @Override
-            public void onResponse(Call<ResponseForgotPass> call, Response<ResponseForgotPass> response) {
-                ResponseForgotPass responseForgotPass = response.body();
+            public void onResponse(Call<ForgotPassResponse> call, Response<ForgotPassResponse> response) {
+                ForgotPassResponse forgotPassResponse = response.body();
                 dialog.cancel();
-                Log.d("zzzzzzzzz", "onResponse: " + responseForgotPass.getKetqua());
-                Toast.makeText(ForgotPasswordActivity.this, responseForgotPass.getKetqua(), Toast.LENGTH_SHORT).show();
+                Log.d("zzzzzzzzz", "onResponse: " + forgotPassResponse.getKetqua());
+                Toast.makeText(ForgotPasswordActivity.this, forgotPassResponse.getKetqua(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<ResponseForgotPass> call, Throwable t) {
+            public void onFailure(Call<ForgotPassResponse> call, Throwable t) {
                 Toast.makeText(ForgotPasswordActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.d("zzzzzzzzz", "ForgotPassword: " + t.toString());
                 dialog.cancel();

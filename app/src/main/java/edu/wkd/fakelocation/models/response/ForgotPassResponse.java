@@ -1,9 +1,9 @@
 package edu.wkd.fakelocation.models.response;
 
-public class ResponseForgotPass {
+public class ForgotPassResponse {
     private String ketqua;
 
-    public ResponseForgotPass(String ketqua) {
+    public ForgotPassResponse(String ketqua) {
         this.ketqua = ketqua;
     }
 

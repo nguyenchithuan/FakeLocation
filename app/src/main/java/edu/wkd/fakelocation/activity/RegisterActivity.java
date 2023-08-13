@@ -13,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import edu.wkd.fakelocation.R;
 import edu.wkd.fakelocation.api.ApiService;
-import edu.wkd.fakelocation.models.postdata.DataRegister;
-import edu.wkd.fakelocation.models.response.ResponseRegister;
+import edu.wkd.fakelocation.models.request.RegisterRequest;
+import edu.wkd.fakelocation.models.response.RegisterResponse;
 import edu.wkd.fakelocation.util.CustomProgressDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -57,7 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
         String strUsername = ed_username.getText().toString().trim();
         String strPassword = ed_password.getText().toString().trim();
         String strComfirmPassword = ed_comfirm_password.getText().toString().trim();
-        DataRegister dataRegister = new DataRegister(strEmail, strUsername, strPassword);
+        RegisterRequest dataRegister = new RegisterRequest(strEmail, strUsername, strPassword);
         dialog.show();
 
         if(!strPassword.equals(strComfirmPassword)) {
@@ -65,12 +65,12 @@ public class RegisterActivity extends AppCompatActivity {
             dialog.cancel();
             return;
         }
-        ApiService.apiService.register(dataRegister).enqueue(new Callback<ResponseRegister>() {
+        ApiService.apiService.register(dataRegister).enqueue(new Callback<RegisterResponse>() {
             @Override
-            public void onResponse(Call<ResponseRegister> call, Response<ResponseRegister> response) {
-                ResponseRegister responseRegister = response.body();
-                Log.d(TAG, "onResponse: " + responseRegister.toString());
-                Toast.makeText(RegisterActivity.this, responseRegister.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
+                RegisterResponse registerResponse = response.body();
+                Log.d(TAG, "onResponse: " + registerResponse.toString());
+                Toast.makeText(RegisterActivity.this, registerResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 dialog.cancel();
 
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
@@ -80,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResponseRegister> call, Throwable t) {
+            public void onFailure(Call<RegisterResponse> call, Throwable t) {
                 Toast.makeText(RegisterActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.d("zzzzzzzzz", "Register: " + t.toString());
                 dialog.cancel();

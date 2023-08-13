@@ -1,10 +1,10 @@
-package edu.wkd.fakelocation.models.postdata;
+package edu.wkd.fakelocation.models.request;
 
-public class DataLogin {
+public class LoginRequest {
     private String email;
     private String password;
 
-    public DataLogin(String email, String password) {
+    public LoginRequest(String email, String password) {
         this.email = email;
         this.password = password;
     }

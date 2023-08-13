@@ -3,12 +3,12 @@ package edu.wkd.fakelocation.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import edu.wkd.fakelocation.models.postdata.DataForgotPass;
-import edu.wkd.fakelocation.models.postdata.DataLogin;
-import edu.wkd.fakelocation.models.postdata.DataRegister;
-import edu.wkd.fakelocation.models.response.ResponseForgotPass;
-import edu.wkd.fakelocation.models.response.ResponseLogin;
-import edu.wkd.fakelocation.models.response.ResponseRegister;
+import edu.wkd.fakelocation.models.request.ForgotPassRequest;
+import edu.wkd.fakelocation.models.request.LoginRequest;
+import edu.wkd.fakelocation.models.request.RegisterRequest;
+import edu.wkd.fakelocation.models.response.ForgotPassResponse;
+import edu.wkd.fakelocation.models.response.LoginResponse;
+import edu.wkd.fakelocation.models.response.RegisterResponse;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -24,11 +24,11 @@ public interface ApiService {
             .create(ApiService.class);
 
     @POST("login")
-    Call<ResponseLogin> login(@Body DataLogin dataLogin);
+    Call<LoginResponse> login(@Body LoginRequest loginRequest);
 
     @POST("register")
-    Call<ResponseRegister> register(@Body DataRegister dataRegister);
+    Call<RegisterResponse> register(@Body RegisterRequest registerRequest);
 
     @POST("resetpass")
-    Call<ResponseForgotPass> forgetPassword(@Body DataForgotPass dataForgetPass);
+    Call<ForgotPassResponse> forgetPassword(@Body ForgotPassRequest forgotPassRequest);
 }
