@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".activity.SplashActivity"
+            android:name=".view.activity.SplashActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,17 +25,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.ForgotPasswordActivity"
+            android:name=".view.activity.ForgotPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".activity.RegisterActivity"
+            android:name=".view.activity.RegisterActivity"
             android:exported="true" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".view.activity.LoginActivity"
             android:exported="true">
         </activity>
         <activity
-            android:name=".activity.MainActivity"
+            android:name=".view.activity.MainActivity"
             android:exported="true" />
     </application>
 

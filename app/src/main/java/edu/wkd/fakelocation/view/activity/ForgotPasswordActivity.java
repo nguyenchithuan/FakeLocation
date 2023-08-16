@@ -1,4 +1,4 @@
-package edu.wkd.fakelocation.activity;
+package edu.wkd.fakelocation.view.activity;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -47,7 +47,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             public void onResponse(Call<ForgotPassResponse> call, Response<ForgotPassResponse> response) {
                 ForgotPassResponse forgotPassResponse = response.body();
                 dialog.cancel();
-                Log.d("zzzzzzzzz", "onResponse: " + forgotPassResponse.getKetqua());
                 Toast.makeText(ForgotPasswordActivity.this, forgotPassResponse.getKetqua(), Toast.LENGTH_SHORT).show();
             }
 

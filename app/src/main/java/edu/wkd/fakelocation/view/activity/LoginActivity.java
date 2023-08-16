@@ -1,4 +1,4 @@
-package edu.wkd.fakelocation.activity;
+package edu.wkd.fakelocation.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;

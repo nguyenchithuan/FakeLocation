@@ -1,4 +1,4 @@
-package edu.wkd.fakelocation.activity;
+package edu.wkd.fakelocation.view.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,19 +7,22 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 
 import edu.wkd.fakelocation.R;
-import edu.wkd.fakelocation.fragment.HomeFragment;
-import edu.wkd.fakelocation.fragment.PictureFragment;
-import edu.wkd.fakelocation.fragment.ProfileFragment;
+import edu.wkd.fakelocation.view.fragment.HomeFragment;
+import edu.wkd.fakelocation.view.fragment.PictureFragment;
+import edu.wkd.fakelocation.view.fragment.ProfileFragment;
 import edu.wkd.fakelocation.util.CustomProgressDialog;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function1;
 
 public class MainActivity extends AppCompatActivity {
-    private MeowBottomNavigation bottom_navigation;
+    private MeowBottomNavigation bottomNavigation;
     private CustomProgressDialog dialog;
 
     @Override
@@ -39,21 +42,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        bottom_navigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation = findViewById(R.id.bottom_navigation);
 
         // Khởi tạo icon, thiết lập màu sắc icon ở file.xml
-        bottom_navigation.add(new MeowBottomNavigation.Model(1, R.drawable.ic_home));
-        bottom_navigation.add(new MeowBottomNavigation.Model(2, R.drawable.ic_image));
-        bottom_navigation.add(new MeowBottomNavigation.Model(3, R.drawable.ic_person));
+        bottomNavigation.add(new MeowBottomNavigation.Model(1, R.drawable.ic_home));
+        bottomNavigation.add(new MeowBottomNavigation.Model(2, R.drawable.ic_image));
+        bottomNavigation.add(new MeowBottomNavigation.Model(3, R.drawable.ic_person));
 
         // open iten 1 trong app
-        bottom_navigation.show(1, true);
+        bottomNavigation.show(1, true);
 
         dialog = new CustomProgressDialog(MainActivity.this, 0);
     }
 
     private void eventMeowNavagationBottom() {
-        bottom_navigation.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
+        bottomNavigation.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
             @Override
             public Unit invoke(MeowBottomNavigation.Model model) {
                 switch (model.getId()) {
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void openFragment(Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.id_framelayout, fragment);
+        transaction.replace(R.id.navHostFragment, fragment);
         transaction.commit();
 
         // For Navigation Bar Color

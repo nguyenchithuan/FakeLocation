@@ -1,4 +1,4 @@
-package edu.wkd.fakelocation.fragment;
+package edu.wkd.fakelocation.view.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

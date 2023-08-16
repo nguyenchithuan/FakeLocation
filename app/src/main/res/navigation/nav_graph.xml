@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="edu.wkd.fakelocation.view.fragment.HomeFragment"
+        android:label="homeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_pictureFragment3"
+            app:destination="@id/pictureFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pictureFragment"
+        android:name="edu.wkd.fakelocation.view.fragment.PictureFragment"
+        android:label="PictureFragment" >
+        <action
+            android:id="@+id/action_pictureFragment3_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="edu.wkd.fakelocation.view.fragment.ProfileFragment"
+        android:label="ProfileFragment" />
+</navigation>

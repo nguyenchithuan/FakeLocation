@@ -3,6 +3,9 @@ package edu.wkd.fakelocation.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.List;
+
+import edu.wkd.fakelocation.models.obj.ChangeBackground;
 import edu.wkd.fakelocation.models.request.ForgotPassRequest;
 import edu.wkd.fakelocation.models.request.LoginRequest;
 import edu.wkd.fakelocation.models.request.RegisterRequest;
@@ -13,6 +16,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface ApiService {
@@ -31,4 +35,7 @@ public interface ApiService {
 
     @POST("resetpass")
     Call<ForgotPassResponse> forgetPassword(@Body ForgotPassRequest forgotPassRequest);
+
+    @GET("list_change_background")
+    Call<List<ChangeBackground>> listChangeBackground();
 }
