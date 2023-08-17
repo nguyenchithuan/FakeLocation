@@ -8,10 +8,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import edu.wkd.fakelocation.R;
+import edu.wkd.fakelocation.models.obj.ChangeBackground;
+import edu.wkd.fakelocation.view.adapter.ChangeBackgroundAdapter;
 
 public class ProfileFragment extends Fragment {
+    private RecyclerView rcvYourPictures;
+    private ChangeBackgroundAdapter yourPicturesAdapter;
 
     public ProfileFragment() {
     }

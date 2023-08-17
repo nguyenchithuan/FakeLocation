@@ -52,7 +52,7 @@ public class ChangeBackgroundAdapter extends RecyclerView.Adapter<ChangeBackgrou
         Glide.with(context)
                 .load(changeBackground.getLinkImage())
                 .centerCrop()
-                .placeholder(R.drawable.bg_loading_img)
+                .placeholder(R.drawable.img_white)
                 .into(holder.imgPhoto);
     }
 

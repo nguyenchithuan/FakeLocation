@@ -1,6 +1,9 @@
 package edu.wkd.fakelocation.view.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +15,26 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.wkd.fakelocation.R;
-import edu.wkd.fakelocation.view.adapter.BackgroundAdapter;
+import edu.wkd.fakelocation.api.ApiService;
+import edu.wkd.fakelocation.models.obj.Location;
+import edu.wkd.fakelocation.util.CustomProgressDialog;
+import edu.wkd.fakelocation.view.adapter.LocationAdapter;
 import edu.wkd.fakelocation.view.adapter.IconAdapter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PictureFragment extends Fragment {
     private RecyclerView rcvItem;
-    private RecyclerView rcvBackground;
+    private RecyclerView rcvLocation;
     private IconAdapter iconAdapter;
-    private BackgroundAdapter backgroundAdapter;
+    private LocationAdapter locationAdapter;
+    private List<Location> listLocation;
+    private CustomProgressDialog dialog;
 
     // https://i.ibb.co/98K3LFz/Rectangle-161.png
     // https://i.ibb.co/18fCCGZ/Rectangle-162.png
@@ -45,19 +59,54 @@ public class PictureFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        dialog = new CustomProgressDialog(getActivity(), 1);
+
+        // ------- category -----------
         rcvItem = view.findViewById(R.id.rcv_icon);
-        rcvBackground = view.findViewById(R.id.rcv_background);
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-
         rcvItem.setLayoutManager(linearLayoutManager);
-        rcvBackground.setLayoutManager(gridLayoutManager);
-
         iconAdapter = new IconAdapter(getActivity());
-        backgroundAdapter = new BackgroundAdapter(getActivity());
-
         rcvItem.setAdapter(iconAdapter);
-        rcvBackground.setAdapter(backgroundAdapter);
+
+        // --------- image location -----------
+        rcvLocation = view.findViewById(R.id.rcv_location);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        rcvLocation.setLayoutManager(gridLayoutManager);
+        listLocation = new ArrayList<>();
+        locationAdapter = new LocationAdapter(getActivity(), listLocation);
+        rcvLocation.setAdapter(locationAdapter);
+
+        getDataLocation();
+    }
+
+    private void getDataLocation() {
+        dialog.show();
+        ApiService.apiService.listLocation().enqueue(new Callback<List<Location>>() {
+            @Override
+            public void onResponse(Call<List<Location>> call, Response<List<Location>> response) {
+                List<Location> listLocationResponse = response.body();
+                locationAdapter.setListLocations(listLocationResponse);
+                Log.d("zzzzzz", "ListLocation: " + listLocationResponse.toString());
+                delayCancelDialog();
+            }
+
+            @Override
+            public void onFailure(Call<List<Location>> call, Throwable t) {
+                Log.d("zzzzzzzzz", "ListLocation-ERROR: " + t.toString());
+                delayCancelDialog();
+            }
+        });
+    }
+
+    public void delayCancelDialog() {
+        // Làm cho app mềm mại hơn không khựng
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.cancel();
+            }
+        }, 2000);
     }
 }

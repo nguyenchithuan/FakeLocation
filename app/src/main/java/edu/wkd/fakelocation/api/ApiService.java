@@ -6,10 +6,12 @@ import com.google.gson.GsonBuilder;
 import java.util.List;
 
 import edu.wkd.fakelocation.models.obj.ChangeBackground;
+import edu.wkd.fakelocation.models.obj.Location;
 import edu.wkd.fakelocation.models.request.ForgotPassRequest;
 import edu.wkd.fakelocation.models.request.LoginRequest;
 import edu.wkd.fakelocation.models.request.RegisterRequest;
 import edu.wkd.fakelocation.models.response.ForgotPassResponse;
+import edu.wkd.fakelocation.models.response.ListNewUserResponse;
 import edu.wkd.fakelocation.models.response.LoginResponse;
 import edu.wkd.fakelocation.models.response.RegisterResponse;
 import retrofit2.Call;
@@ -38,4 +40,10 @@ public interface ApiService {
 
     @GET("list_change_background")
     Call<List<ChangeBackground>> listChangeBackground();
+
+    @GET("list_new_users")
+    Call<ListNewUserResponse> listNewUsers();
+
+    @GET("api/locations")
+    Call<List<Location>> listLocation();
 }

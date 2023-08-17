@@ -17,7 +17,7 @@ public class User {
     private String ipRegister;
     @SerializedName("link_avatar")
     private String linkAvatar;
-    @SerializedName("create_at")
+    @SerializedName("created_at")
     private String createAt;
 
     public User() {
