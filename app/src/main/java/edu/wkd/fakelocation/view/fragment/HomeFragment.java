@@ -1,6 +1,5 @@
 package edu.wkd.fakelocation.view.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -25,11 +24,11 @@ import java.util.List;
 
 import edu.wkd.fakelocation.R;
 import edu.wkd.fakelocation.api.ApiService;
-import edu.wkd.fakelocation.models.obj.ChangeBackground;
+import edu.wkd.fakelocation.models.obj.Picture;
 import edu.wkd.fakelocation.models.obj.User;
-import edu.wkd.fakelocation.models.response.ListNewUserResponse;
+import edu.wkd.fakelocation.models.response.ListUserResponse;
 import edu.wkd.fakelocation.util.CustomProgressDialog;
-import edu.wkd.fakelocation.view.adapter.ChangeBackgroundAdapter;
+import edu.wkd.fakelocation.view.adapter.PictureAdapter;
 import edu.wkd.fakelocation.view.adapter.UserAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -39,11 +38,11 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
     private ViewPager2 mViewPager2;
     private RecyclerView rcvLatestPictures;
-    private RecyclerView rcvListNewUser;
-    private List<ChangeBackground> changeBackgroundList;
+    private RecyclerView rcvListUser;
+    private List<Picture> listPicture;
     private List<User> listUser;
-    private ChangeBackgroundAdapter sliderAdapter;
-    private ChangeBackgroundAdapter latestPicturesAdapter;
+    private PictureAdapter sliderAdapter;
+    private PictureAdapter latestPicturesAdapter;
     private UserAdapter userAdapter;
     private Button btnBack;
     private Button btnNext;
@@ -72,9 +71,9 @@ public class HomeFragment extends Fragment {
 
         init(view);
 
-        getListChageBackGroundSliderAndLatestPictures();
+        getListImageSliderAndLatestPictures();
 
-        getListNewUser();
+        getListUser();
     }
 
 
@@ -84,7 +83,7 @@ public class HomeFragment extends Fragment {
         btnBack = view.findViewById(R.id.btn_back);
         btnNext = view.findViewById(R.id.btn_next);
         rcvLatestPictures = view.findViewById(R.id.rcv_latest_pictures);
-        rcvListNewUser = view.findViewById(R.id.rcv_list_new_user);
+        rcvListUser = view.findViewById(R.id.rcv_list_user);
         dialog = new CustomProgressDialog(getContext(), 1);
 
         // ------------------ Image slider --------------------
@@ -92,13 +91,13 @@ public class HomeFragment extends Fragment {
         comfigViewPager2();
 
         // Chú ý latest pictures, slider dùng adapter giống nhau thay layout_item
-        changeBackgroundList = new ArrayList<>();
-        sliderAdapter = new ChangeBackgroundAdapter(getActivity(), changeBackgroundList, R.layout.layout_item_change_background_slider);
+        listPicture = new ArrayList<>();
+        sliderAdapter = new PictureAdapter(getActivity(), listPicture, R.layout.layout_item_change_background_slider);
         mViewPager2.setAdapter(sliderAdapter);
 
 
         // ------------------ latest pictures --------------------
-        latestPicturesAdapter = new ChangeBackgroundAdapter(getActivity(), changeBackgroundList, R.layout.layout_item_latest_pictures);
+        latestPicturesAdapter = new PictureAdapter(getActivity(), listPicture, R.layout.layout_item_latest_pictures);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         rcvLatestPictures.setLayoutManager(gridLayoutManager);
         rcvLatestPictures.setFocusable(false);
@@ -111,10 +110,10 @@ public class HomeFragment extends Fragment {
             listUser = new ArrayList<>();
             userAdapter = new UserAdapter(getActivity(), listUser);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-            rcvListNewUser.setLayoutManager(linearLayoutManager);
-            rcvListNewUser.setFocusable(false);
-            rcvListNewUser.setNestedScrollingEnabled(false);
-            rcvListNewUser.setAdapter(userAdapter);
+            rcvListUser.setLayoutManager(linearLayoutManager);
+            rcvListUser.setFocusable(false);
+            rcvListUser.setNestedScrollingEnabled(false);
+            rcvListUser.setAdapter(userAdapter);
         } catch (Exception e) {
             Log.d("zzzzz", "init: " + e.getMessage());
         }
@@ -155,42 +154,42 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void getListChageBackGroundSliderAndLatestPictures() {
+    private void getListImageSliderAndLatestPictures() {
         dialog.show();
-        ApiService.apiService.listChangeBackground().enqueue(new Callback<List<ChangeBackground>>() {
+        ApiService.apiService.listLatestPictures().enqueue(new Callback<List<Picture>>() {
             @Override
-            public void onResponse(Call<List<ChangeBackground>> call, Response<List<ChangeBackground>> response) {
-                List<ChangeBackground> changeBackgroundListReponse = response.body();
+            public void onResponse(Call<List<Picture>> call, Response<List<Picture>> response) {
+                List<Picture> listPictureResponse = response.body();
                 // Loading image slider
-                sliderAdapter.setChangeBackgroundList(changeBackgroundListReponse);
+                sliderAdapter.setList(listPictureResponse);
                 // Loading latest pictures
-                latestPicturesAdapter.setChangeBackgroundList(changeBackgroundListReponse);
-                Log.d("zzzzzz", "listChangeBackground: " + changeBackgroundListReponse.get(0).toString());
+                latestPicturesAdapter.setList(listPictureResponse);
+                Log.d("zzzzzz", "listLatestPictures: " + listPictureResponse.get(0).toString());
                 delayCancelDialog();
 
             }
 
             @Override
-            public void onFailure(Call<List<ChangeBackground>> call, Throwable t) {
-                Log.d("zzzzzzzzz", "listChangeBackground-ERROR: " + t.toString());
+            public void onFailure(Call<List<Picture>> call, Throwable t) {
+                Log.d("zzzzzzzzz", "listLatestPictures-ERROR: " + t.toString());
                 delayCancelDialog();
             }
         });
     }
 
-    private void getListNewUser() {
+    private void getListUser() {
         dialog.show();
-        ApiService.apiService.listNewUsers().enqueue(new Callback<ListNewUserResponse>() {
+        ApiService.apiService.listNewUsers().enqueue(new Callback<ListUserResponse>() {
             @Override
-            public void onResponse(Call<ListNewUserResponse> call, Response<ListNewUserResponse> response) {
-                ListNewUserResponse listNewUserResponse = response.body();
-                userAdapter.setListUser(listNewUserResponse.getNewUsers());
-                Log.d("zzzzzz", "ListUser: " + listNewUserResponse.getNewUsers().toString());
+            public void onResponse(Call<ListUserResponse> call, Response<ListUserResponse> response) {
+                ListUserResponse listUserResponse = response.body();
+                userAdapter.setListUser(listUserResponse.getNewUsers());
+                Log.d("zzzzzz", "ListUser: " + listUserResponse.getNewUsers().toString());
                 delayCancelDialog();
             }
 
             @Override
-            public void onFailure(Call<ListNewUserResponse> call, Throwable t) {
+            public void onFailure(Call<ListUserResponse> call, Throwable t) {
                 Log.d("zzzzzzzzz", "ListUser-ERROR: " + t.toString());
                 delayCancelDialog();
             }

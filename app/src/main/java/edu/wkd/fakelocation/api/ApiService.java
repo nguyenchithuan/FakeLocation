@@ -5,13 +5,13 @@ import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
-import edu.wkd.fakelocation.models.obj.ChangeBackground;
+import edu.wkd.fakelocation.models.obj.Picture;
 import edu.wkd.fakelocation.models.obj.Location;
 import edu.wkd.fakelocation.models.request.ForgotPassRequest;
 import edu.wkd.fakelocation.models.request.LoginRequest;
 import edu.wkd.fakelocation.models.request.RegisterRequest;
 import edu.wkd.fakelocation.models.response.ForgotPassResponse;
-import edu.wkd.fakelocation.models.response.ListNewUserResponse;
+import edu.wkd.fakelocation.models.response.ListUserResponse;
 import edu.wkd.fakelocation.models.response.LoginResponse;
 import edu.wkd.fakelocation.models.response.RegisterResponse;
 import retrofit2.Call;
@@ -19,7 +19,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
@@ -39,11 +42,14 @@ public interface ApiService {
     Call<ForgotPassResponse> forgetPassword(@Body ForgotPassRequest forgotPassRequest);
 
     @GET("list_change_background")
-    Call<List<ChangeBackground>> listChangeBackground();
+    Call<List<Picture>> listLatestPictures();
 
     @GET("list_new_users")
-    Call<ListNewUserResponse> listNewUsers();
+    Call<ListUserResponse> listNewUsers();
 
     @GET("api/locations")
-    Call<List<Location>> listLocation();
+    Call<List<Location>> listLocation(@Query("page") int page);
+
+    @GET("profile/list_fakelocation/2")
+    Call<List<Picture>> listYourPictures(@Header("Authorization") String authorization);
 }

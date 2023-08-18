@@ -35,6 +35,7 @@ public class PictureFragment extends Fragment {
     private LocationAdapter locationAdapter;
     private List<Location> listLocation;
     private CustomProgressDialog dialog;
+    private int page = 1;
 
     // https://i.ibb.co/98K3LFz/Rectangle-161.png
     // https://i.ibb.co/18fCCGZ/Rectangle-162.png
@@ -82,7 +83,7 @@ public class PictureFragment extends Fragment {
 
     private void getDataLocation() {
         dialog.show();
-        ApiService.apiService.listLocation().enqueue(new Callback<List<Location>>() {
+        ApiService.apiService.listLocation(page).enqueue(new Callback<List<Location>>() {
             @Override
             public void onResponse(Call<List<Location>> call, Response<List<Location>> response) {
                 List<Location> listLocationResponse = response.body();

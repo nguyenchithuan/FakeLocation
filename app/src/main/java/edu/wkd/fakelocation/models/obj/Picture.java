@@ -2,7 +2,7 @@ package edu.wkd.fakelocation.models.obj;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ChangeBackground {
+public class Picture {
 
     @SerializedName("id_image")
     private int idImage;
@@ -14,11 +14,11 @@ public class ChangeBackground {
     @SerializedName("created_at")
     private String createdAt;
 
-    public ChangeBackground() {
+    public Picture() {
 
     }
 
-    public ChangeBackground(int idImage, int idUser, String linkImage, int commentCount, String createdAt) {
+    public Picture(int idImage, int idUser, String linkImage, int commentCount, String createdAt) {
         this.idImage = idImage;
         this.idUser = idUser;
         this.linkImage = linkImage;

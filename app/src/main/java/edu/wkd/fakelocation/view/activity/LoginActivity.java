@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 LoginResponse loginResponse = response.body();
-                Utit.TOKEN = loginResponse.getToken(); // Set data vào token để ở đâu cx có thể sử dụng
+                Utit.TOKEN = "Bearer " + loginResponse.getToken(); // Set data vào token để ở đâu cx có thể sử dụng
                 if (Utit.TOKEN != null) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);

@@ -6,14 +6,14 @@ import java.util.ArrayList;
 
 import edu.wkd.fakelocation.models.obj.User;
 
-public class ListNewUserResponse {
+public class ListUserResponse {
     @SerializedName("new_users")
     private ArrayList<User> newUsers;
 
-    public ListNewUserResponse() {
+    public ListUserResponse() {
     }
 
-    public ListNewUserResponse(ArrayList<User> newUsers) {
+    public ListUserResponse(ArrayList<User> newUsers) {
         this.newUsers = newUsers;
     }
 

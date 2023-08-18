@@ -15,42 +15,42 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import edu.wkd.fakelocation.R;
-import edu.wkd.fakelocation.models.obj.ChangeBackground;
+import edu.wkd.fakelocation.models.obj.Picture;
 
-public class ChangeBackgroundAdapter extends RecyclerView.Adapter<ChangeBackgroundAdapter.PhotoViewHolder> {
+public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.FakeLocationHolder> {
     private final Context context;
-    private List<ChangeBackground> changeBackgroundList;
+    private List<Picture> listPictures;
     private int layoutResource;
 
-    public ChangeBackgroundAdapter(Context context, List<ChangeBackground> changeBackgroundList, int layoutResource) {
+    public PictureAdapter(Context context, List<Picture> listFakeLocation, int layoutResource) {
         this.context = context;
-        this.changeBackgroundList = changeBackgroundList;
+        this.listPictures = listFakeLocation;
         this.layoutResource = layoutResource;
     }
 
-    public void setChangeBackgroundList(List<ChangeBackground> list) {
-        changeBackgroundList = list;
+    public void setList(List<Picture> listPictures) {
+        this.listPictures = listPictures;
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public PhotoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FakeLocationHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(layoutResource, parent, false);
-        return new PhotoViewHolder(view);
+        return new FakeLocationHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PhotoViewHolder holder, int position) {
-        ChangeBackground changeBackground = changeBackgroundList.get(position);
-        if(changeBackground == null) {
+    public void onBindViewHolder(@NonNull FakeLocationHolder holder, int position) {
+        Picture picture = listPictures.get(position);
+        if(picture == null) {
             return;
         }
 
-        holder.tvCountComment.setText(changeBackground.getCommentCount() + "");
+        holder.tvCountComment.setText(picture.getCommentCount() + "");
 
         Glide.with(context)
-                .load(changeBackground.getLinkImage())
+                .load(picture.getLinkImage())
                 .centerCrop()
                 .placeholder(R.drawable.img_white)
                 .into(holder.imgPhoto);
@@ -58,16 +58,16 @@ public class ChangeBackgroundAdapter extends RecyclerView.Adapter<ChangeBackgrou
 
     @Override
     public int getItemCount() {
-        if(changeBackgroundList != null) {
-            return changeBackgroundList.size();
+        if(listPictures != null) {
+            return listPictures.size();
         }
         return 0;
     }
 
-    public static class PhotoViewHolder extends RecyclerView.ViewHolder {
+    public static class FakeLocationHolder extends RecyclerView.ViewHolder {
         private final ImageView imgPhoto;
         private final TextView tvCountComment;
-        public PhotoViewHolder(@NonNull View itemView) {
+        public FakeLocationHolder(@NonNull View itemView) {
             super(itemView);
             imgPhoto = itemView.findViewById(R.id.img_photo);
             tvCountComment  = itemView.findViewById(R.id.tv_count_commnet);
