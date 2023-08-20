@@ -5,41 +5,56 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import edu.wkd.fakelocation.R;
 
-public class IconAdapter extends RecyclerView.Adapter<IconAdapter.IconViewHolder>{
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.IconViewHolder>{
     private Context context;
+    private List<String> listCategory;
 
-    public IconAdapter(Context context) {
+    public CategoryAdapter(Context context, List<String> listCategory) {
         this.context = context;
+        this.listCategory = listCategory;
+    }
+
+    public void setList(List<String> listCategory) {
+        this.listCategory = listCategory;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public IconViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_item_icon, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.layout_item_category, parent, false);
         return new IconViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull IconViewHolder holder, int position) {
+        String category = listCategory.get(position);
 
+        holder.tvCategory.setText(category);
     }
 
     @Override
     public int getItemCount() {
-        return 7;
+        if(listCategory != null) {
+            return listCategory.size();
+        }
+        return 0;
     }
 
     public class IconViewHolder extends RecyclerView.ViewHolder {
-        private ImageView imgIcon;
+        private TextView tvCategory;
         public IconViewHolder(@NonNull View itemView) {
             super(itemView);
-            imgIcon = itemView.findViewById(R.id.img_icon);
+            tvCategory = itemView.findViewById(R.id.tv_category);
         }
     }
 }

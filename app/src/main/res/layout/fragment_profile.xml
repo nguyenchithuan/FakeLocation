@@ -16,8 +16,9 @@
         android:padding="12dp"
         >
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:id="@+id/img_avt"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/img_avt"
             android:layout_gravity="center"
             />
@@ -30,21 +31,22 @@
             android:layout_gravity="center"
             android:gravity="center"
             >
+
             <TextView
+                android:id="@+id/tv_count_pictures"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="50"
-                android:textColor="@color/white"
                 android:layout_margin="3dp"
-                android:textSize="18sp"
-                />
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="17sp" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pictures"
                 android:textColor="@color/white"
                 android:layout_margin="3dp"
-                android:textSize="18sp"
+                android:textSize="17sp"
                 />
         </LinearLayout>
 
@@ -57,12 +59,13 @@
             android:gravity="center"
             >
             <TextView
+                android:id="@+id/tv_count_comment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="200"
+                android:text="0"
                 android:textColor="@color/white"
                 android:layout_margin="3dp"
-                android:textSize="18sp"
+                android:textSize="17sp"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -70,7 +73,34 @@
                 android:text="Comments"
                 android:textColor="@color/white"
                 android:layout_margin="3dp"
-                android:textSize="18sp"
+                android:textSize="17sp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            >
+            <TextView
+                android:id="@+id/tv_count_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textColor="@color/white"
+                android:layout_margin="3dp"
+                android:textSize="17sp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Views"
+                android:textColor="@color/white"
+                android:layout_margin="3dp"
+                android:textSize="17sp"
                 />
         </LinearLayout>
 

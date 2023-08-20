@@ -5,8 +5,10 @@ import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
+import edu.wkd.fakelocation.models.obj.Categories;
 import edu.wkd.fakelocation.models.obj.Picture;
 import edu.wkd.fakelocation.models.obj.Location;
+import edu.wkd.fakelocation.models.obj.Profile;
 import edu.wkd.fakelocation.models.request.ForgotPassRequest;
 import edu.wkd.fakelocation.models.request.LoginRequest;
 import edu.wkd.fakelocation.models.request.RegisterRequest;
@@ -27,7 +29,7 @@ import retrofit2.http.Query;
 public interface ApiService {
     Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
     ApiService apiService = new Retrofit.Builder()
-            .baseUrl("http://14.225.7.221:3002/")
+            .baseUrl("http://14.225.7.221:3005/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
@@ -52,4 +54,10 @@ public interface ApiService {
 
     @GET("profile/list_fakelocation/2")
     Call<List<Picture>> listYourPictures(@Header("Authorization") String authorization);
+
+    @GET("profile/2")
+    Call<Profile> profileUser(@Header("Authorization") String authorization);
+
+    @GET("api/categories")
+    Call<Categories> listCategories();
 }

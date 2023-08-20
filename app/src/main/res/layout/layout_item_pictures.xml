@@ -21,8 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_box_comment_view"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="5dp"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="2dp"
             android:gravity="center"
             android:layout_alignParentStart="true"
             android:layout_alignParentBottom="true"
@@ -30,18 +30,33 @@
             android:layout_marginLeft="10dp"
             >
             <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
                 android:src="@drawable/comment"
+                android:layout_marginRight="4dp"
                 />
             <TextView
                 android:id="@+id/tv_count_commnet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="15"
-                android:textSize="12sp"
+                android:textSize="14dp"
                 android:textColor="@color/white"
-                android:layout_marginLeft="10dp"
+                />
+            <ImageView
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:src="@drawable/view"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="4dp"
+                />
+            <TextView
+                android:id="@+id/tv_count_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="14dp"
+                android:textColor="@color/white"
                 />
         </LinearLayout>
     </RelativeLayout>

@@ -92,12 +92,12 @@ public class HomeFragment extends Fragment {
 
         // Chú ý latest pictures, slider dùng adapter giống nhau thay layout_item
         listPicture = new ArrayList<>();
-        sliderAdapter = new PictureAdapter(getActivity(), listPicture, R.layout.layout_item_change_background_slider);
+        sliderAdapter = new PictureAdapter(getActivity(), listPicture, R.layout.layout_item_slider);
         mViewPager2.setAdapter(sliderAdapter);
 
 
         // ------------------ latest pictures --------------------
-        latestPicturesAdapter = new PictureAdapter(getActivity(), listPicture, R.layout.layout_item_latest_pictures);
+        latestPicturesAdapter = new PictureAdapter(getActivity(), listPicture, R.layout.layout_item_pictures);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         rcvLatestPictures.setLayoutManager(gridLayoutManager);
         rcvLatestPictures.setFocusable(false);
