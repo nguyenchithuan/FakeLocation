@@ -2,7 +2,9 @@ package edu.wkd.fakelocation.models.obj;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Picture {
+import java.io.Serializable;
+
+public class Picture implements Serializable {
 
     @SerializedName("id_image")
     private int idImage;

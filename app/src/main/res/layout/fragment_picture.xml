@@ -14,6 +14,7 @@
         android:layout_marginTop="10dp"
         >
         <EditText
+            android:id="@+id/ed_search"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -26,6 +27,8 @@
             android:hint="Search"
             android:textColorHint="#8C8C8C"
             android:layout_marginRight="5dp"
+            android:inputType="text"
+            android:imeOptions="actionSearch"
             />
 
         <ImageView

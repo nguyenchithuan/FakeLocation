@@ -1,5 +1,6 @@
 package edu.wkd.fakelocation.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -28,14 +29,16 @@ import edu.wkd.fakelocation.models.obj.Picture;
 import edu.wkd.fakelocation.models.obj.User;
 import edu.wkd.fakelocation.models.response.ListUserResponse;
 import edu.wkd.fakelocation.util.CustomProgressDialog;
+import edu.wkd.fakelocation.util.UtitInterface;
 import edu.wkd.fakelocation.view.adapter.PictureAdapter;
 import edu.wkd.fakelocation.view.adapter.UserAdapter;
+import edu.wkd.fakelocation.view.fragment.bottomsheet.BottomSheetDialogFragmentComment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements UtitInterface {
     private ViewPager2 mViewPager2;
     private RecyclerView rcvLatestPictures;
     private RecyclerView rcvListUser;
@@ -97,7 +100,7 @@ public class HomeFragment extends Fragment {
 
 
         // ------------------ latest pictures --------------------
-        latestPicturesAdapter = new PictureAdapter(getActivity(), listPicture, R.layout.layout_item_pictures);
+        latestPicturesAdapter = new PictureAdapter(getActivity(), listPicture, R.layout.layout_item_pictures, this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         rcvLatestPictures.setLayoutManager(gridLayoutManager);
         rcvLatestPictures.setFocusable(false);
@@ -205,5 +208,12 @@ public class HomeFragment extends Fragment {
                 dialog.cancel();
             }
         }, 2000);
+    }
+
+    @Override
+    public void comment(Context context, Object object) {
+        Picture picture = (Picture) object;
+        BottomSheetDialogFragmentComment sheetDialog = BottomSheetDialogFragmentComment.newInstance(picture);
+        sheetDialog.show(getActivity().getSupportFragmentManager(), sheetDialog.getTag());
     }
 }

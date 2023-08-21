@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,16 +18,27 @@ import java.util.List;
 
 import edu.wkd.fakelocation.R;
 import edu.wkd.fakelocation.models.obj.Picture;
+import edu.wkd.fakelocation.util.CrudInterface;
+import edu.wkd.fakelocation.util.Utit;
+import edu.wkd.fakelocation.util.UtitInterface;
 
-public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.FakeLocationHolder> {
+public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.FakeLocationHolder>{
     private final Context context;
     private List<Picture> listPictures;
     private int layoutResource;
+    private UtitInterface utitInterface;
 
-    public PictureAdapter(Context context, List<Picture> listFakeLocation, int layoutResource) {
+    public PictureAdapter(Context context, List<Picture> listPictures, int layoutResource) {
         this.context = context;
-        this.listPictures = listFakeLocation;
+        this.listPictures = listPictures;
         this.layoutResource = layoutResource;
+    }
+
+    public PictureAdapter(Context context, List<Picture> listPictures, int layoutResource, UtitInterface utitInterface) {
+        this.context = context;
+        this.listPictures = listPictures;
+        this.layoutResource = layoutResource;
+        this.utitInterface = utitInterface;
     }
 
     public void setList(List<Picture> listPictures) {
@@ -54,6 +67,15 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.FakeLoca
                 .centerCrop()
                 .placeholder(R.drawable.img_white)
                 .into(holder.imgPhoto);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(utitInterface != null) {
+                    utitInterface.comment(context, picture);
+                }
+            }
+        });
     }
 
     @Override

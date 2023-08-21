@@ -4,9 +4,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,11 +40,13 @@ public class PictureFragment extends Fragment {
     private CategoryAdapter categoryAdapter;
     private LocationAdapter locationAdapter;
     private List<Location> listLocation;
+    private GridLayoutManager gridLayoutManager;
     private List<String> listCategory;
     private CustomProgressDialog dialog;
     private boolean isLoading;
     private boolean isLastPage;
     private int currentPage = 1;
+    private EditText edSearch;
 
     // https://i.ibb.co/98K3LFz/Rectangle-161.png
     // https://i.ibb.co/18fCCGZ/Rectangle-162.png
@@ -66,23 +72,8 @@ public class PictureFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        dialog = new CustomProgressDialog(getActivity(), 1);
+        init(view);
 
-        // ------- category -----------
-        rcvCategories = view.findViewById(R.id.rcv_categories);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        rcvCategories.setLayoutManager(linearLayoutManager);
-        listCategory = new ArrayList<>();
-        categoryAdapter = new CategoryAdapter(getActivity(), listCategory);
-        rcvCategories.setAdapter(categoryAdapter);
-
-        // --------- image location -----------
-        rcvLocation = view.findViewById(R.id.rcv_location);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-        rcvLocation.setLayoutManager(gridLayoutManager);
-        listLocation = new ArrayList<>();
-        locationAdapter = new LocationAdapter(getActivity(), listLocation);
-        rcvLocation.setAdapter(locationAdapter);
 
         // Xem tincoder bài phân trang để hiểu thêm
         rcvLocation.addOnScrollListener(new PaginationScrollListener(gridLayoutManager) {
@@ -105,9 +96,50 @@ public class PictureFragment extends Fragment {
             }
         });
 
+        edSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH) {
+                    try {
+                        String strSearch = edSearch.getText().toString().trim();
+                        Log.d("zzzzz", "onEditorAction: " + strSearch);
+                        locationAdapter.getFilter().filter(strSearch);
+                    } catch (Exception exception) {
+                        Log.d("zzzzz", "onEditorAction: " + exception.toString());
+                    }
+                }
+                return false;
+            }
+        });
+
         getDataPageLocation(currentPage);
 
         getDataCategories();
+    }
+
+    private void init(View view) {
+        dialog = new CustomProgressDialog(getActivity(), 1);
+        edSearch = view.findViewById(R.id.ed_search);
+
+        // ------- category -----------
+        rcvCategories = view.findViewById(R.id.rcv_categories);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        rcvCategories.setLayoutManager(linearLayoutManager);
+        listCategory = new ArrayList<>();
+        categoryAdapter = new CategoryAdapter(getActivity(), listCategory);
+        rcvCategories.setAdapter(categoryAdapter);
+
+        // --------- image location -----------
+        rcvLocation = view.findViewById(R.id.rcv_location);
+        gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        rcvLocation.setLayoutManager(gridLayoutManager);
+        listLocation = new ArrayList<>();
+        locationAdapter = new LocationAdapter(getActivity(), listLocation);
+        rcvLocation.setAdapter(locationAdapter);
+    }
+
+    private void searchImage() {
+
     }
 
     private void loadNextPage(int currentPage) {
@@ -128,7 +160,7 @@ public class PictureFragment extends Fragment {
                 isLoading = false;
                 // Kiểm tra nếu hết dữ liệu mà nhỏ hơn 14 thì tức là hết trang
                 // mỗi page có 14 data
-                if(listLocationResponse.size() < 14) {
+                if (listLocationResponse.size() < 14) {
                     isLastPage = true;
                 }
             }
@@ -150,7 +182,7 @@ public class PictureFragment extends Fragment {
                 listCategory = categories.getCategories();
                 categoryAdapter.setList(listCategory);
 
-                Log.d("zzzzzz", "getDataCategories: " +  categories.toString());
+                Log.d("zzzzzz", "getDataCategories: " + categories.toString());
             }
 
             @Override

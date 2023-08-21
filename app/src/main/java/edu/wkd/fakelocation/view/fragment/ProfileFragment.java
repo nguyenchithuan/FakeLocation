@@ -88,7 +88,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void getListYourPictures() {
-        ApiService.apiService.listYourPictures(Utit.TOKEN).enqueue(new Callback<List<Picture>>() {
+        ApiService.apiService.listYourPictures(Utit.TOKEN, Utit.USER_LOGIN.getId()).enqueue(new Callback<List<Picture>>() {
             @Override
             public void onResponse(Call<List<Picture>> call, Response<List<Picture>> response) {
                 List<Picture> list = response.body();
@@ -104,7 +104,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void getProfileUser() {
-        ApiService.apiService.profileUser(Utit.TOKEN).enqueue(new Callback<Profile>() {
+        ApiService.apiService.profileUser(Utit.TOKEN, Utit.USER_LOGIN.getId()).enqueue(new Callback<Profile>() {
             @Override
             public void onResponse(Call<Profile> call, Response<Profile> response) {
                 profileUser = response.body();
