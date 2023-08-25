@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activity.LogInNowActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:background="@drawable/bg_error_login"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Sorry!!"
+            android:textSize="35sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="20dp"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Your have to LOG IN to save this picture"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:layout_marginTop="15dp"
+            />
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/img_error_login"
+            />
+        <Button
+            android:id="@+id/btn_login_now"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Login Now"
+            android:textAllCaps="false"
+            android:background="@drawable/bg_btn_login_now"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            />
+    </LinearLayout>
+
+
+
+</FrameLayout>

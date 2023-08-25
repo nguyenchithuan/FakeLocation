@@ -17,6 +17,7 @@
             />
 
         <LinearLayout
+            android:id="@+id/linearLayout_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_box_comment_view"

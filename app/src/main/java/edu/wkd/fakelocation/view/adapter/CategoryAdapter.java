@@ -6,21 +6,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import edu.wkd.fakelocation.R;
+import edu.wkd.fakelocation.util.UtitInterface;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.IconViewHolder>{
     private Context context;
     private List<String> listCategory;
+    private boolean isPressed;
+    private UtitInterface utitInterface;
 
-    public CategoryAdapter(Context context, List<String> listCategory) {
+    public CategoryAdapter(Context context, List<String> listCategory, UtitInterface utitInterface) {
         this.context = context;
         this.listCategory = listCategory;
+        this.utitInterface = utitInterface;
     }
 
     public void setList(List<String> listCategory) {
@@ -40,6 +46,21 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.IconVi
         String category = listCategory.get(position);
 
         holder.tvCategory.setText(category);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isPressed) {
+                    holder.tvCategory.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white));
+                    holder.tvCategory.setTextColor(ContextCompat.getColor(context, android.R.color.black));
+                } else {
+                    holder.tvCategory.setBackgroundColor(ContextCompat.getColor(context, android.R.color.black));
+                    holder.tvCategory.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+                }
+                isPressed = !isPressed;
+                utitInterface.onclick(context, category);
+            }
+        });
     }
 
     @Override

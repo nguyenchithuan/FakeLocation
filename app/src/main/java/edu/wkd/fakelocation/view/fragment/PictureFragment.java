@@ -1,5 +1,6 @@
 package edu.wkd.fakelocation.view.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -23,18 +24,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.wkd.fakelocation.R;
-import edu.wkd.fakelocation.api.ApiService;
+import edu.wkd.fakelocation.data.api.ApiService;
 import edu.wkd.fakelocation.models.obj.Categories;
 import edu.wkd.fakelocation.models.obj.Location;
 import edu.wkd.fakelocation.util.CustomProgressDialog;
 import edu.wkd.fakelocation.util.PaginationScrollListener;
+import edu.wkd.fakelocation.util.UtitInterface;
 import edu.wkd.fakelocation.view.adapter.LocationAdapter;
 import edu.wkd.fakelocation.view.adapter.CategoryAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PictureFragment extends Fragment {
+public class PictureFragment extends Fragment implements UtitInterface {
     private RecyclerView rcvCategories;
     private RecyclerView rcvLocation;
     private CategoryAdapter categoryAdapter;
@@ -126,7 +128,7 @@ public class PictureFragment extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         rcvCategories.setLayoutManager(linearLayoutManager);
         listCategory = new ArrayList<>();
-        categoryAdapter = new CategoryAdapter(getActivity(), listCategory);
+        categoryAdapter = new CategoryAdapter(getActivity(), listCategory, this::onclick);
         rcvCategories.setAdapter(categoryAdapter);
 
         // --------- image location -----------
@@ -201,5 +203,11 @@ public class PictureFragment extends Fragment {
                 dialog.cancel();
             }
         }, 1000);
+    }
+
+    @Override
+    public void onclick(Context context, Object object) {
+        String category = (String) object;
+        locationAdapter.getFilter().filter(category);
     }
 }

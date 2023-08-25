@@ -1,19 +1,23 @@
 package edu.wkd.fakelocation.view.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 
+import java.util.List;
+
 import edu.wkd.fakelocation.R;
+import edu.wkd.fakelocation.data.database_local.room.UserDatabase;
+import edu.wkd.fakelocation.data.database_local.shared_preferences.DataLocalManager;
+import edu.wkd.fakelocation.models.obj.User;
 import edu.wkd.fakelocation.view.fragment.HomeFragment;
 import edu.wkd.fakelocation.view.fragment.PictureFragment;
 import edu.wkd.fakelocation.view.fragment.ProfileFragment;
@@ -67,7 +71,16 @@ public class MainActivity extends AppCompatActivity {
                         openFragment(PictureFragment.newInstance());
                         break;
                     case 3:
-                        openFragment(ProfileFragment.newInstance());
+                        List<User> listUser = UserDatabase.getInstance(MainActivity.this).userDao().getListUser();
+                        String strToken = DataLocalManager.getDataToken();
+                        Log.d("zzzz", "listUser_room: " + listUser.size());
+                        Log.d("zzzz", "strToken: " + strToken);
+                        if (strToken.length() == 0 || listUser.size() == 0) {
+                            Intent intent = new Intent(MainActivity.this, LogInNowActivity.class);
+                            startActivity(intent);
+                        } else {
+                            openFragment(ProfileFragment.newInstance());
+                        }
                         break;
                 }
                 return null;

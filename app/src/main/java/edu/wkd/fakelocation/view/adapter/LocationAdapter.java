@@ -82,7 +82,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
                 String strSearch = charSequence.toString();
                 if (strSearch.isEmpty()) {
                     listLocations = listLocationsTemp;
-                    Log.d("zzzzz", "performFiltering - 1: " + listLocations.toString());
                 } else {
                     List<Location> list = new ArrayList<>();
                     for (Location location : listLocationsTemp) {
@@ -91,7 +90,6 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
                         }
                     }
                     listLocations = list;
-                    Log.d("zzzzz", "performFiltering: " + listLocations.toString());
                 }
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = listLocations;

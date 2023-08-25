@@ -1,6 +1,7 @@
 package edu.wkd.fakelocation.view.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -24,12 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.wkd.fakelocation.R;
-import edu.wkd.fakelocation.api.ApiService;
+import edu.wkd.fakelocation.data.api.ApiService;
+import edu.wkd.fakelocation.data.database_local.room.UserDatabase;
+import edu.wkd.fakelocation.data.database_local.shared_preferences.DataLocalManager;
 import edu.wkd.fakelocation.models.obj.Picture;
 import edu.wkd.fakelocation.models.obj.User;
 import edu.wkd.fakelocation.models.response.ListUserResponse;
 import edu.wkd.fakelocation.util.CustomProgressDialog;
 import edu.wkd.fakelocation.util.UtitInterface;
+import edu.wkd.fakelocation.view.activity.LogInNowActivity;
 import edu.wkd.fakelocation.view.adapter.PictureAdapter;
 import edu.wkd.fakelocation.view.adapter.UserAdapter;
 import edu.wkd.fakelocation.view.fragment.bottomsheet.BottomSheetDialogFragmentComment;
@@ -211,7 +215,14 @@ public class HomeFragment extends Fragment implements UtitInterface {
     }
 
     @Override
-    public void comment(Context context, Object object) {
+    public void onclick(Context context, Object object) {
+        List<User> listUser = UserDatabase.getInstance(getActivity()).userDao().getListUser();
+        String strToken = DataLocalManager.getDataToken();
+        if(strToken.length() == 0 || listUser.size() == 0) {
+            Intent intent = new Intent(getActivity(), LogInNowActivity.class);
+            startActivity(intent);
+            return;
+        }
         Picture picture = (Picture) object;
         BottomSheetDialogFragmentComment sheetDialog = BottomSheetDialogFragmentComment.newInstance(picture);
         sheetDialog.show(getActivity().getSupportFragmentManager(), sheetDialog.getTag());

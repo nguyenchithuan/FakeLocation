@@ -1,18 +1,13 @@
 package edu.wkd.fakelocation.view.fragment.bottomsheet;
 
 import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,12 +22,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.wkd.fakelocation.R;
-import edu.wkd.fakelocation.api.ApiService;
+import edu.wkd.fakelocation.data.api.ApiService;
+import edu.wkd.fakelocation.data.database_local.room.UserDatabase;
+import edu.wkd.fakelocation.data.database_local.shared_preferences.DataLocalManager;
 import edu.wkd.fakelocation.models.obj.Comment;
 import edu.wkd.fakelocation.models.obj.Picture;
+import edu.wkd.fakelocation.models.obj.User;
 import edu.wkd.fakelocation.models.request.CommentRequest;
 import edu.wkd.fakelocation.models.response.CommentResponse;
-import edu.wkd.fakelocation.util.Utit;
 import edu.wkd.fakelocation.view.adapter.CommentAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -102,8 +99,9 @@ public class BottomSheetDialogFragmentComment extends BottomSheetDialogFragment 
                 .into(imgPhoto);
 
         // Image avate comment
+        User userLogin = UserDatabase.getInstance(getActivity()).userDao().getListUser().get(0);
         Glide.with(getActivity())
-                .load(Utit.USER_LOGIN.getLinkAvatar())
+                .load(userLogin.getLinkAvatar())
                 .placeholder(R.drawable.img_white)
                 .error(R.drawable.img_avt)
                 .into(imgAvt);
@@ -145,7 +143,8 @@ public class BottomSheetDialogFragmentComment extends BottomSheetDialogFragment 
 
         CommentRequest commentRequest = new CommentRequest(idImage, strComment, strLinkImage);
 
-        ApiService.apiService.postComment(Utit.TOKEN, commentRequest).enqueue(new Callback<CommentResponse>() {
+        String strToken = DataLocalManager.getDataToken();
+        ApiService.apiService.postComment(strToken, commentRequest).enqueue(new Callback<CommentResponse>() {
             @Override
             public void onResponse(Call<CommentResponse> call, Response<CommentResponse> response) {
                 CommentResponse commentResponse = response.body();

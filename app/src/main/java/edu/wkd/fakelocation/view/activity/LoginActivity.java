@@ -11,19 +11,23 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.List;
+
 import edu.wkd.fakelocation.R;
-import edu.wkd.fakelocation.api.ApiService;
+import edu.wkd.fakelocation.data.api.ApiService;
+import edu.wkd.fakelocation.data.database_local.room.UserDatabase;
+import edu.wkd.fakelocation.data.database_local.shared_preferences.DataLocalManager;
+import edu.wkd.fakelocation.models.obj.User;
 import edu.wkd.fakelocation.models.request.LoginRequest;
 import edu.wkd.fakelocation.models.response.LoginResponse;
 import edu.wkd.fakelocation.util.CustomProgressDialog;
-import edu.wkd.fakelocation.util.Utit;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
 public class LoginActivity extends AppCompatActivity {
-    public static final String TAG = "zzzzzzzzzzzz";
+    public static final String TAG = "zzzzzz";
     private TextView tv_register;
     private Button btn_login;
     private EditText ed_email;
@@ -35,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         init();
 
@@ -68,9 +72,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 LoginResponse loginResponse = response.body();
-                Utit.TOKEN = "Bearer " + loginResponse.getToken(); // Set data vào token để ở đâu cx có thể sử dụng
-                Utit.USER_LOGIN = loginResponse.getUser();
-                if (Utit.TOKEN != null) {
+                String token = "Bearer " + loginResponse.getToken(); // Set data vào token để ở đâu cx có thể sử dụng
+                // Lưu token trong SharedPreferences
+                DataLocalManager.setDataToken(token);
+                // Lưu user trong room
+                UserDatabase.getInstance(LoginActivity.this).userDao().insertUser(loginResponse.getUser());
+
+                if (token.length() > 0) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finishAffinity();
@@ -78,12 +86,12 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, loginResponse.getKetqua(), Toast.LENGTH_SHORT).show();
                 }
                 dialog.cancel();
-                Log.d(TAG, "onResponse: " + loginResponse);
+                Log.d("zzzzz", "onResponse: " + loginResponse);
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Log.d(TAG, "Login: " + t.toString());
+                Log.d("zzzzz", "Login: " + t.toString());
                 Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                 dialog.cancel();
             }

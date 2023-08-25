@@ -10,7 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import edu.wkd.fakelocation.R;
-import edu.wkd.fakelocation.api.ApiService;
+import edu.wkd.fakelocation.data.api.ApiService;
 import edu.wkd.fakelocation.models.request.ForgotPassRequest;
 import edu.wkd.fakelocation.models.response.ForgotPassResponse;
 import edu.wkd.fakelocation.util.CustomProgressDialog;

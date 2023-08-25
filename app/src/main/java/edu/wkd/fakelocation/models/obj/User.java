@@ -1,8 +1,20 @@
 package edu.wkd.fakelocation.models.obj;
 
+
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
+
+// Entity: Đại diện cho bảng
+// Dao: chứa các phương thức truy cập sql
+// Database: Thực hiện truy vấn dữ liệu để show lên trả về cho người dùng
+
+@Entity(tableName = "user")
 public class User {
+    @PrimaryKey(autoGenerate = true)
+    private int idLocation;
     @SerializedName("id_user")
     private int id;
     @SerializedName("email")
@@ -100,5 +112,13 @@ public class User {
 
     public void setCreateAt(String createAt) {
         this.createAt = createAt;
+    }
+
+    public int getIdLocation() {
+        return idLocation;
+    }
+
+    public void setIdLocation(int idLocation) {
+        this.idLocation = idLocation;
     }
 }

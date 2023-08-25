@@ -19,10 +19,10 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import edu.wkd.fakelocation.R;
-import edu.wkd.fakelocation.api.ApiService;
+import edu.wkd.fakelocation.data.api.ApiService;
+import edu.wkd.fakelocation.data.database_local.shared_preferences.DataLocalManager;
 import edu.wkd.fakelocation.models.obj.Comment;
 import edu.wkd.fakelocation.models.response.CommentDeleteReponse;
-import edu.wkd.fakelocation.util.Utit;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -87,7 +87,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     }
 
     private void deleteComment(int idComment, int position) {
-        ApiService.apiService.deleteComment(Utit.TOKEN, idComment).enqueue(new Callback<CommentDeleteReponse>() {
+        String strToken = DataLocalManager.getDataToken();
+        ApiService.apiService.deleteComment(strToken, idComment).enqueue(new Callback<CommentDeleteReponse>() {
             @Override
             public void onResponse(Call<CommentDeleteReponse> call, Response<CommentDeleteReponse> response) {
                     // Lý do làm thế này là api nó trả 2 lại object khác nhau

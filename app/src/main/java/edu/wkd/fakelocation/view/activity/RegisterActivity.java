@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import edu.wkd.fakelocation.R;
-import edu.wkd.fakelocation.api.ApiService;
+import edu.wkd.fakelocation.data.api.ApiService;
 import edu.wkd.fakelocation.models.request.RegisterRequest;
 import edu.wkd.fakelocation.models.response.RegisterResponse;
 import edu.wkd.fakelocation.util.CustomProgressDialog;

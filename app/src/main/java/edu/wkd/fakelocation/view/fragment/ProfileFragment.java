@@ -1,5 +1,6 @@
 package edu.wkd.fakelocation.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,10 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.wkd.fakelocation.R;
-import edu.wkd.fakelocation.api.ApiService;
+import edu.wkd.fakelocation.data.api.ApiService;
+import edu.wkd.fakelocation.data.database_local.room.UserDatabase;
+import edu.wkd.fakelocation.data.database_local.shared_preferences.DataLocalManager;
 import edu.wkd.fakelocation.models.obj.Picture;
 import edu.wkd.fakelocation.models.obj.Profile;
-import edu.wkd.fakelocation.util.Utit;
+import edu.wkd.fakelocation.models.obj.User;
+import edu.wkd.fakelocation.view.activity.LogInNowActivity;
 import edu.wkd.fakelocation.view.adapter.PictureAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,6 +45,7 @@ public class ProfileFragment extends Fragment {
     private TextView tvCountComments;
     private TextView tvCountViews;
     private ImageView imgAvt;
+    private Button btnLogout;
 
     public ProfileFragment() {
     }
@@ -69,13 +75,27 @@ public class ProfileFragment extends Fragment {
         getListYourPictures();
 
         getProfileUser();
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UserDatabase.getInstance(getActivity()).userDao().deleteAllUser();
+                DataLocalManager.setDataToken("");
+
+                Intent intent = new Intent(getActivity(), LogInNowActivity.class);
+                startActivity(intent);
+                getActivity().finishAffinity();
+            }
+        });
     }
+
 
     private void init(View view) {
         tvCountPictures = view.findViewById(R.id.tv_count_pictures);
         tvCountComments = view.findViewById(R.id.tv_count_comment);
         tvCountViews = view.findViewById(R.id.tv_count_view);
         imgAvt = view.findViewById(R.id.img_avt);
+        btnLogout = view.findViewById(R.id.btn_log_out);
 
         rcvYourPictures = view.findViewById(R.id.rcv_your_pictures);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
@@ -88,7 +108,9 @@ public class ProfileFragment extends Fragment {
     }
 
     private void getListYourPictures() {
-        ApiService.apiService.listYourPictures(Utit.TOKEN, Utit.USER_LOGIN.getId()).enqueue(new Callback<List<Picture>>() {
+        User userLogin = UserDatabase.getInstance(getActivity()).userDao().getListUser().get(0);
+        String strToken = DataLocalManager.getDataToken();
+        ApiService.apiService.listYourPictures(strToken, userLogin.getId()).enqueue(new Callback<List<Picture>>() {
             @Override
             public void onResponse(Call<List<Picture>> call, Response<List<Picture>> response) {
                 List<Picture> list = response.body();
@@ -104,7 +126,9 @@ public class ProfileFragment extends Fragment {
     }
 
     private void getProfileUser() {
-        ApiService.apiService.profileUser(Utit.TOKEN, Utit.USER_LOGIN.getId()).enqueue(new Callback<Profile>() {
+        User userLogin = UserDatabase.getInstance(getActivity()).userDao().getListUser().get(0);
+        String strToken = DataLocalManager.getDataToken();
+        ApiService.apiService.profileUser(strToken, userLogin.getId()).enqueue(new Callback<Profile>() {
             @Override
             public void onResponse(Call<Profile> call, Response<Profile> response) {
                 profileUser = response.body();
@@ -131,4 +155,5 @@ public class ProfileFragment extends Fragment {
             }
         });
     }
+
 }

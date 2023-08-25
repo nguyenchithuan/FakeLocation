@@ -144,8 +144,13 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 />
+            <Button
+                android:id="@+id/btn_log_out"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Log out"
+                android:layout_marginTop="50dp"
+                />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-
 </LinearLayout>

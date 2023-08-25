@@ -4,9 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,8 +17,6 @@ import java.util.List;
 
 import edu.wkd.fakelocation.R;
 import edu.wkd.fakelocation.models.obj.Picture;
-import edu.wkd.fakelocation.util.CrudInterface;
-import edu.wkd.fakelocation.util.Utit;
 import edu.wkd.fakelocation.util.UtitInterface;
 
 public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.FakeLocationHolder>{
@@ -68,11 +65,11 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.FakeLoca
                 .placeholder(R.drawable.img_white)
                 .into(holder.imgPhoto);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.linearLayoutGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(utitInterface != null) {
-                    utitInterface.comment(context, picture);
+                    utitInterface.onclick(context, picture);
                 }
             }
         });
@@ -89,10 +86,12 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.FakeLoca
     public static class FakeLocationHolder extends RecyclerView.ViewHolder {
         private final ImageView imgPhoto;
         private final TextView tvCountComment;
+        private final LinearLayout linearLayoutGroup;
         public FakeLocationHolder(@NonNull View itemView) {
             super(itemView);
             imgPhoto = itemView.findViewById(R.id.img_photo);
             tvCountComment  = itemView.findViewById(R.id.tv_count_commnet);
+            linearLayoutGroup  = itemView.findViewById(R.id.linearLayout_group);
         }
     }
 }
