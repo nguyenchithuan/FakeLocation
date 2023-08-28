@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.wkd.fakelocation.R;
+import edu.wkd.fakelocation.databinding.LayoutItemLocationBinding;
 import edu.wkd.fakelocation.models.obj.Location;
 
 public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.LocationViewHolder> implements Filterable {
@@ -40,8 +41,8 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     @NonNull
     @Override
     public LocationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_item_location, parent, false);
-        return new LocationViewHolder(view);
+        LayoutItemLocationBinding binding = LayoutItemLocationBinding.inflate(LayoutInflater.from(context), parent, false);
+        return new LocationViewHolder(binding);
     }
 
     @Override
@@ -54,7 +55,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
                 .load(location.getLink())
                 .placeholder(R.drawable.img_white)
                 .error("https://i.ibb.co/18fCCGZ/Rectangle-162.png")
-                .into(holder.imgLocation);
+                .into(holder.binding.imgLocation);
     }
 
     @Override
@@ -66,11 +67,11 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
     }
 
     public class LocationViewHolder extends RecyclerView.ViewHolder {
-        private ImageView imgLocation;
+        private LayoutItemLocationBinding binding;
 
-        public LocationViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imgLocation = itemView.findViewById(R.id.img_location);
+        public LocationViewHolder(@NonNull LayoutItemLocationBinding layoutItemLocationBinding) {
+            super(layoutItemLocationBinding.getRoot());
+            binding = layoutItemLocationBinding;
         }
     }
 

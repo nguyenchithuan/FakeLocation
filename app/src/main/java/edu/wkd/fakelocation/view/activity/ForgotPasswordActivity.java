@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import edu.wkd.fakelocation.R;
 import edu.wkd.fakelocation.data.api.ApiService;
+import edu.wkd.fakelocation.databinding.ActivityForgotPasswordBinding;
 import edu.wkd.fakelocation.models.request.ForgotPassRequest;
 import edu.wkd.fakelocation.models.response.ForgotPassResponse;
 import edu.wkd.fakelocation.util.CustomProgressDialog;
@@ -19,26 +20,26 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
-    private EditText ed_email;
-    private Button btn_send;
     private CustomProgressDialog dialog;
+    private ActivityForgotPasswordBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_password);
+        binding = ActivityForgotPasswordBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         init();
 
-        btn_send.setOnClickListener(view -> {
+        binding.btnSend.setOnClickListener(view -> {
             forgotPasswordApp();
         });
     }
 
     private void forgotPasswordApp() {
-        String strEmail = ed_email.getText().toString().trim();
+        String strEmail = binding.edEmail.getText().toString().trim();
         ForgotPassRequest dataForgotPass = new ForgotPassRequest(strEmail);
         dialog.show();
 
@@ -60,9 +61,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
     }
 
     private void init() {
-        ed_email = findViewById(R.id.ed_email);
-        btn_send = findViewById(R.id.btn_send);
-
         dialog = new CustomProgressDialog(ForgotPasswordActivity.this, 1);
     }
 

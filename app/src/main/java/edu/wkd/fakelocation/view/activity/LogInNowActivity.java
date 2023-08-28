@@ -8,18 +8,19 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import edu.wkd.fakelocation.R;
+import edu.wkd.fakelocation.databinding.ActivityLogInNowBinding;
 
 public class LogInNowActivity extends AppCompatActivity {
-    private Button btnLoginNow;
+    private ActivityLogInNowBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_in_now);
+        binding = ActivityLogInNowBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        btnLoginNow = findViewById(R.id.btn_login_now);
 
-        btnLoginNow.setOnClickListener(view -> {
+        binding.btnLoginNow.setOnClickListener(view -> {
             Intent intent = new Intent(LogInNowActivity.this, LoginActivity.class);
             startActivity(intent);
         });

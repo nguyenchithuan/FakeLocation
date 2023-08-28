@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 import edu.wkd.fakelocation.R;
+import edu.wkd.fakelocation.databinding.LayoutItemNewUserBinding;
 import edu.wkd.fakelocation.models.obj.User;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
@@ -37,8 +38,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     @NonNull
     @Override
     public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_item_new_user, parent, false);
-        return  new UserViewHolder(view);
+        LayoutItemNewUserBinding binding = LayoutItemNewUserBinding.inflate(LayoutInflater.from(context), parent, false);
+        return  new UserViewHolder(binding);
     }
 
     @Override
@@ -47,14 +48,14 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
         if(user == null) {
             return;
         }
-        holder.tvUsername.setText(user.getUserName());
+        holder.binding.tvUsername.setText(user.getUserName());
         // Chuyển createAt về dạng dd/MM/yyyy
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        holder.tvCreateAt.setText(dateFormat.format(new Date(user.getCreateAt())));
+        holder.binding.tvCreateAt.setText(dateFormat.format(new Date(user.getCreateAt())));
         Glide.with(context).load(user.getLinkAvatar())
                 .placeholder(R.drawable.img_white)
                 .error(R.drawable.img_avt)
-                .into(holder.imgUser);
+                .into(holder.binding.imgUser);
     }
 
     @Override
@@ -66,14 +67,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
     }
 
     public class UserViewHolder extends RecyclerView.ViewHolder {
-        private ImageView imgUser;
-        private TextView tvUsername;
-        private TextView tvCreateAt;
-        public UserViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imgUser = itemView.findViewById(R.id.img_user);
-            tvUsername = itemView.findViewById(R.id.tv_username);
-            tvCreateAt = itemView.findViewById(R.id.tv_createAt);
+        LayoutItemNewUserBinding binding;
+        public UserViewHolder(@NonNull LayoutItemNewUserBinding layoutItemNewUserBinding) {
+            super(layoutItemNewUserBinding.getRoot());
+            binding = layoutItemNewUserBinding;
         }
     }
 }

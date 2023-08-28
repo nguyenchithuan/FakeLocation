@@ -17,6 +17,7 @@ import edu.wkd.fakelocation.R;
 import edu.wkd.fakelocation.data.api.ApiService;
 import edu.wkd.fakelocation.data.database_local.room.UserDatabase;
 import edu.wkd.fakelocation.data.database_local.shared_preferences.DataLocalManager;
+import edu.wkd.fakelocation.databinding.ActivityLoginBinding;
 import edu.wkd.fakelocation.models.obj.User;
 import edu.wkd.fakelocation.models.request.LoginRequest;
 import edu.wkd.fakelocation.models.response.LoginResponse;
@@ -27,34 +28,30 @@ import retrofit2.Response;
 
 
 public class LoginActivity extends AppCompatActivity {
-    public static final String TAG = "zzzzzz";
-    private TextView tv_register;
-    private Button btn_login;
-    private EditText ed_email;
-    private EditText ed_password;
-    private TextView tv_forget_password;
     private CustomProgressDialog dialog;
+    private ActivityLoginBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         init();
 
-        btn_login.setOnClickListener(v -> {
+        binding.btnLogin.setOnClickListener(v -> {
             loginApp();
         });
 
-        tv_register.setOnClickListener(view -> {
+        binding.tvRegister.setOnClickListener(view -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
             // pending animation activity
             overridePendingTransition(R.anim.slilde_in_left, R.anim.slilde_out_left);
         });
 
-        tv_forget_password.setOnClickListener(view -> {
+        binding.tvForgetPassword.setOnClickListener(view -> {
             Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
             startActivity(intent);
             // pending animation activity
@@ -63,8 +60,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginApp() {
-        String strEmail = ed_email.getText().toString().trim();
-        String strPassword = ed_password.getText().toString().trim();
+        String strEmail = binding.edEmail.getText().toString().trim();
+        String strPassword = binding.edPassword.getText().toString().trim();
         LoginRequest dataLogin = new LoginRequest(strEmail, strPassword);
         dialog.show();
 
@@ -99,12 +96,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void init() {
-        tv_register = findViewById(R.id.tv_register);
-        btn_login = findViewById(R.id.btn_login);
-        ed_email = findViewById(R.id.ed_email);
-        ed_password = findViewById(R.id.ed_password);
-        tv_forget_password = findViewById(R.id.tv_forget_password);
-
         dialog = new CustomProgressDialog(LoginActivity.this, 1);
     }
 }

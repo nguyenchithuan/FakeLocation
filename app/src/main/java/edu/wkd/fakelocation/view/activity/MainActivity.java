@@ -17,6 +17,7 @@ import java.util.List;
 import edu.wkd.fakelocation.R;
 import edu.wkd.fakelocation.data.database_local.room.UserDatabase;
 import edu.wkd.fakelocation.data.database_local.shared_preferences.DataLocalManager;
+import edu.wkd.fakelocation.databinding.ActivityMainBinding;
 import edu.wkd.fakelocation.models.obj.User;
 import edu.wkd.fakelocation.view.fragment.HomeFragment;
 import edu.wkd.fakelocation.view.fragment.PictureFragment;
@@ -27,12 +28,13 @@ import kotlin.jvm.functions.Function1;
 
 public class MainActivity extends AppCompatActivity {
     private MeowBottomNavigation bottomNavigation;
-    private CustomProgressDialog dialog;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         //  transparent Status Bar
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -46,21 +48,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        bottomNavigation = findViewById(R.id.bottom_navigation);
-
         // Khởi tạo icon, thiết lập màu sắc icon ở file.xml
-        bottomNavigation.add(new MeowBottomNavigation.Model(1, R.drawable.ic_home));
-        bottomNavigation.add(new MeowBottomNavigation.Model(2, R.drawable.ic_image));
-        bottomNavigation.add(new MeowBottomNavigation.Model(3, R.drawable.ic_person));
+        binding.bottomNavigation.add(new MeowBottomNavigation.Model(1, R.drawable.ic_home));
+        binding.bottomNavigation.add(new MeowBottomNavigation.Model(2, R.drawable.ic_image));
+        binding.bottomNavigation.add(new MeowBottomNavigation.Model(3, R.drawable.ic_person));
 
         // open iten 1 trong app
-        bottomNavigation.show(1, true);
-
-        dialog = new CustomProgressDialog(MainActivity.this, 0);
+        binding.bottomNavigation.show(1, true);
     }
 
     private void eventMeowNavagationBottom() {
-        bottomNavigation.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
+        binding.bottomNavigation.setOnClickMenuListener(new Function1<MeowBottomNavigation.Model, Unit>() {
             @Override
             public Unit invoke(MeowBottomNavigation.Model model) {
                 switch (model.getId()) {

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import edu.wkd.fakelocation.R;
+import edu.wkd.fakelocation.databinding.LayoutItemCategoryBinding;
 import edu.wkd.fakelocation.util.UtitInterface;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.IconViewHolder>{
@@ -37,25 +38,24 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.IconVi
     @NonNull
     @Override
     public IconViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_item_category, parent, false);
-        return new IconViewHolder(view);
+        LayoutItemCategoryBinding binding = LayoutItemCategoryBinding.inflate(LayoutInflater.from(context), parent, false);
+        return new IconViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull IconViewHolder holder, int position) {
         String category = listCategory.get(position);
 
-        holder.tvCategory.setText(category);
-
+        holder.binding.tvCategory.setText(category);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(isPressed) {
-                    holder.tvCategory.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white));
-                    holder.tvCategory.setTextColor(ContextCompat.getColor(context, android.R.color.black));
+                    holder.binding.tvCategory.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white));
+                    holder.binding.tvCategory.setTextColor(ContextCompat.getColor(context, android.R.color.black));
                 } else {
-                    holder.tvCategory.setBackgroundColor(ContextCompat.getColor(context, android.R.color.black));
-                    holder.tvCategory.setTextColor(ContextCompat.getColor(context, android.R.color.white));
+                    holder.binding.tvCategory.setBackgroundColor(ContextCompat.getColor(context, android.R.color.black));
+                    holder.binding.tvCategory.setTextColor(ContextCompat.getColor(context, android.R.color.white));
                 }
                 isPressed = !isPressed;
                 utitInterface.onclick(context, category);
@@ -72,10 +72,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.IconVi
     }
 
     public class IconViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvCategory;
-        public IconViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvCategory = itemView.findViewById(R.id.tv_category);
+        private LayoutItemCategoryBinding binding;
+        public IconViewHolder(@NonNull LayoutItemCategoryBinding layoutItemCategoryBinding) {
+            super(layoutItemCategoryBinding.getRoot());
+            this.binding = layoutItemCategoryBinding;
         }
     }
 }

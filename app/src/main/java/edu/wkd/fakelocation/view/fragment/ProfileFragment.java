@@ -27,6 +27,7 @@ import edu.wkd.fakelocation.R;
 import edu.wkd.fakelocation.data.api.ApiService;
 import edu.wkd.fakelocation.data.database_local.room.UserDatabase;
 import edu.wkd.fakelocation.data.database_local.shared_preferences.DataLocalManager;
+import edu.wkd.fakelocation.databinding.FragmentProfileBinding;
 import edu.wkd.fakelocation.models.obj.Picture;
 import edu.wkd.fakelocation.models.obj.Profile;
 import edu.wkd.fakelocation.models.obj.User;
@@ -37,15 +38,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProfileFragment extends Fragment {
-    private RecyclerView rcvYourPictures;
-    private PictureAdapter yourPicturesAdapter;
     private List<Picture> listYourPictures;
+    private PictureAdapter yourPicturesAdapter;
     private Profile profileUser;
-    private TextView tvCountPictures;
-    private TextView tvCountComments;
-    private TextView tvCountViews;
-    private ImageView imgAvt;
-    private Button btnLogout;
+    private FragmentProfileBinding binding;
 
     public ProfileFragment() {
     }
@@ -63,7 +59,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        binding = FragmentProfileBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -76,7 +73,7 @@ public class ProfileFragment extends Fragment {
 
         getProfileUser();
 
-        btnLogout.setOnClickListener(new View.OnClickListener() {
+        binding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 UserDatabase.getInstance(getActivity()).userDao().deleteAllUser();
@@ -91,13 +88,8 @@ public class ProfileFragment extends Fragment {
 
 
     private void init(View view) {
-        tvCountPictures = view.findViewById(R.id.tv_count_pictures);
-        tvCountComments = view.findViewById(R.id.tv_count_comment);
-        tvCountViews = view.findViewById(R.id.tv_count_view);
-        imgAvt = view.findViewById(R.id.img_avt);
-        btnLogout = view.findViewById(R.id.btn_log_out);
 
-        rcvYourPictures = view.findViewById(R.id.rcv_your_pictures);
+        RecyclerView rcvYourPictures = view.findViewById(R.id.rcv_your_pictures);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         rcvYourPictures.setLayoutManager(gridLayoutManager);
         rcvYourPictures.setFocusable(false);
@@ -138,13 +130,13 @@ public class ProfileFragment extends Fragment {
                 new Handler(Looper.getMainLooper()).post(new Runnable() {
                     @Override
                     public void run() {
-                        tvCountPictures.setText(profileUser.getImageCount() + "");
-                        tvCountComments.setText(profileUser.getCommenCount() + "");
+                        binding.tvCountPictures.setText(profileUser.getImageCount() + "");
+                        binding.tvCountComment.setText(profileUser.getCommenCount() + "");
                         Glide.with(getContext())
                                 .load(profileUser.getLinkAvatar())
                                 .placeholder(R.drawable.img_white)
                                 .error(R.drawable.img_avt)
-                                .into(imgAvt);
+                                .into(binding.imgAvt);
                     }
                 });
             }

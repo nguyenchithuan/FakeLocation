@@ -28,6 +28,7 @@ import edu.wkd.fakelocation.R;
 import edu.wkd.fakelocation.data.api.ApiService;
 import edu.wkd.fakelocation.data.database_local.room.UserDatabase;
 import edu.wkd.fakelocation.data.database_local.shared_preferences.DataLocalManager;
+import edu.wkd.fakelocation.databinding.FragmentHomeBinding;
 import edu.wkd.fakelocation.models.obj.Picture;
 import edu.wkd.fakelocation.models.obj.User;
 import edu.wkd.fakelocation.models.response.ListUserResponse;
@@ -43,17 +44,13 @@ import retrofit2.Response;
 
 
 public class HomeFragment extends Fragment implements UtitInterface {
-    private ViewPager2 mViewPager2;
-    private RecyclerView rcvLatestPictures;
-    private RecyclerView rcvListUser;
     private List<Picture> listPicture;
     private List<User> listUser;
     private PictureAdapter sliderAdapter;
     private PictureAdapter latestPicturesAdapter;
     private UserAdapter userAdapter;
-    private Button btnBack;
-    private Button btnNext;
     private CustomProgressDialog dialog;
+    private FragmentHomeBinding binding;
 
     public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
@@ -68,7 +65,8 @@ public class HomeFragment extends Fragment implements UtitInterface {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -84,13 +82,9 @@ public class HomeFragment extends Fragment implements UtitInterface {
     }
 
 
-
     private void init(View view) {
-        mViewPager2 = view.findViewById(R.id.view_pager_2);
-        btnBack = view.findViewById(R.id.btn_back);
-        btnNext = view.findViewById(R.id.btn_next);
-        rcvLatestPictures = view.findViewById(R.id.rcv_latest_pictures);
-        rcvListUser = view.findViewById(R.id.rcv_list_user);
+        RecyclerView rcvLatestPictures = binding.rcvLatestPictures;
+        RecyclerView rcvListUser = binding.rcvListUser;
         dialog = new CustomProgressDialog(getContext(), 1);
 
         // ------------------ Image slider --------------------
@@ -100,7 +94,7 @@ public class HomeFragment extends Fragment implements UtitInterface {
         // Chú ý latest pictures, slider dùng adapter giống nhau thay layout_item
         listPicture = new ArrayList<>();
         sliderAdapter = new PictureAdapter(getActivity(), listPicture, R.layout.layout_item_slider);
-        mViewPager2.setAdapter(sliderAdapter);
+        binding.viewPager2.setAdapter(sliderAdapter);
 
 
         // ------------------ latest pictures --------------------
@@ -112,25 +106,20 @@ public class HomeFragment extends Fragment implements UtitInterface {
         rcvLatestPictures.setAdapter(latestPicturesAdapter);
 
         // ----------------- list new user -----------------
-
-        try {
-            listUser = new ArrayList<>();
-            userAdapter = new UserAdapter(getActivity(), listUser);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-            rcvListUser.setLayoutManager(linearLayoutManager);
-            rcvListUser.setFocusable(false);
-            rcvListUser.setNestedScrollingEnabled(false);
-            rcvListUser.setAdapter(userAdapter);
-        } catch (Exception e) {
-            Log.d("zzzzz", "init: " + e.getMessage());
-        }
+        listUser = new ArrayList<>();
+        userAdapter = new UserAdapter(getActivity(), listUser);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        rcvListUser.setLayoutManager(linearLayoutManager);
+        rcvListUser.setFocusable(false);
+        rcvListUser.setNestedScrollingEnabled(false);
+        rcvListUser.setAdapter(userAdapter);
     }
 
     private void comfigViewPager2() {
         // setting viewpager2
-        mViewPager2.setOffscreenPageLimit(3); // hiển thị 3 ảnh
-        mViewPager2.setClipToPadding(false);
-        mViewPager2.setClipChildren(false);
+        binding.viewPager2.setOffscreenPageLimit(3); // hiển thị 3 ảnh
+        binding.viewPager2.setClipToPadding(false);
+        binding.viewPager2.setClipChildren(false);
         // khởi tạo
         CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
         compositePageTransformer.addTransformer(new MarginPageTransformer(40)); // cách nhau 40 px
@@ -142,21 +131,22 @@ public class HomeFragment extends Fragment implements UtitInterface {
                 page.setScaleY(0.85f + r * 0.15f);
             }
         });
-        mViewPager2.setPageTransformer(compositePageTransformer);
+        binding.viewPager2.setPageTransformer(compositePageTransformer);
 
-        btnBack.setOnClickListener(new View.OnClickListener() {
+
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int index = mViewPager2.getCurrentItem();
-                mViewPager2.setCurrentItem(index - 1);
+                int index = binding.viewPager2.getCurrentItem();
+                binding.viewPager2.setCurrentItem(index - 1);
             }
         });
 
-        btnNext.setOnClickListener(new View.OnClickListener() {
+        binding.btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int index = mViewPager2.getCurrentItem();
-                mViewPager2.setCurrentItem(index + 1);
+                int index = binding.viewPager2.getCurrentItem();
+                binding.viewPager2.setCurrentItem(index + 1);
             }
         });
     }
@@ -218,7 +208,7 @@ public class HomeFragment extends Fragment implements UtitInterface {
     public void onclick(Context context, Object object) {
         List<User> listUser = UserDatabase.getInstance(getActivity()).userDao().getListUser();
         String strToken = DataLocalManager.getDataToken();
-        if(strToken.length() == 0 || listUser.size() == 0) {
+        if (strToken.length() == 0 || listUser.size() == 0) {
             Intent intent = new Intent(getActivity(), LogInNowActivity.class);
             startActivity(intent);
             return;

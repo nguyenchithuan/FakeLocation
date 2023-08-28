@@ -21,6 +21,7 @@ import java.util.List;
 import edu.wkd.fakelocation.R;
 import edu.wkd.fakelocation.data.api.ApiService;
 import edu.wkd.fakelocation.data.database_local.shared_preferences.DataLocalManager;
+import edu.wkd.fakelocation.databinding.LayoutItemCommentBinding;
 import edu.wkd.fakelocation.models.obj.Comment;
 import edu.wkd.fakelocation.models.response.CommentDeleteReponse;
 import retrofit2.Call;
@@ -45,8 +46,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     @NonNull
     @Override
     public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.layout_item_comment, parent, false);
-        return new CommentViewHolder(view);
+        LayoutItemCommentBinding binding = LayoutItemCommentBinding.inflate(LayoutInflater.from(context), parent, false);
+        return new CommentViewHolder(binding);
     }
 
     @Override
@@ -55,14 +56,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         if (comment == null) {
             return;
         }
-        holder.tvUsername.setText(comment.getUserName());
-        holder.tvComment.setText(comment.getNoidungComment());
+        holder.binding.tvUsername.setText(comment.getUserName());
+        holder.binding.tvComment.setText(comment.getNoidungComment());
 
         Glide.with(context)
                 .load(comment.getLinkAvatar())
                 .placeholder(R.drawable.img_white)
                 .error(R.drawable.img_avt)
-                .into(holder.imgAvt);
+                .into(holder.binding.imgAvt);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,17 +122,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     }
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {
-        private ImageView imgAvt;
-        private TextView tvUsername;
-        private TextView tvComment;
-        private TextView tvTime;
+        LayoutItemCommentBinding binding;
 
-        public CommentViewHolder(@NonNull View itemView) {
-            super(itemView);
-            imgAvt = itemView.findViewById(R.id.img_avt);
-            tvUsername = itemView.findViewById(R.id.tv_username);
-            tvComment = itemView.findViewById(R.id.tv_comment);
-            tvTime = itemView.findViewById(R.id.tv_time);
+        public CommentViewHolder(@NonNull LayoutItemCommentBinding layoutItemCommentBinding) {
+            super(layoutItemCommentBinding.getRoot());
+            binding = layoutItemCommentBinding;
         }
     }
 }

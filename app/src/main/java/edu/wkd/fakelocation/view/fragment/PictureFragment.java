@@ -25,6 +25,7 @@ import java.util.List;
 
 import edu.wkd.fakelocation.R;
 import edu.wkd.fakelocation.data.api.ApiService;
+import edu.wkd.fakelocation.databinding.FragmentPictureBinding;
 import edu.wkd.fakelocation.models.obj.Categories;
 import edu.wkd.fakelocation.models.obj.Location;
 import edu.wkd.fakelocation.util.CustomProgressDialog;
@@ -37,19 +38,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PictureFragment extends Fragment implements UtitInterface {
-    private RecyclerView rcvCategories;
-    private RecyclerView rcvLocation;
     private CategoryAdapter categoryAdapter;
     private LocationAdapter locationAdapter;
-    private List<Location> listLocation;
     private GridLayoutManager gridLayoutManager;
+    private List<Location> listLocation;
     private List<String> listCategory;
     private CustomProgressDialog dialog;
     private boolean isLoading;
     private boolean isLastPage;
     private int currentPage = 1;
-    private EditText edSearch;
-
+    private FragmentPictureBinding binding;
     // https://i.ibb.co/98K3LFz/Rectangle-161.png
     // https://i.ibb.co/18fCCGZ/Rectangle-162.png
 
@@ -67,7 +65,8 @@ public class PictureFragment extends Fragment implements UtitInterface {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_picture, container, false);
+        binding = FragmentPictureBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -78,7 +77,7 @@ public class PictureFragment extends Fragment implements UtitInterface {
 
 
         // Xem tincoder bài phân trang để hiểu thêm
-        rcvLocation.addOnScrollListener(new PaginationScrollListener(gridLayoutManager) {
+        binding.rcvLocation.addOnScrollListener(new PaginationScrollListener(gridLayoutManager) {
             @Override
             public void loadMoreItems() { // nếu scroll trong recycleview mà kịch thì nó sẽ chạy hàm này
                 // Đăng load page thì tăng page lên 1
@@ -98,12 +97,12 @@ public class PictureFragment extends Fragment implements UtitInterface {
             }
         });
 
-        edSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        binding.edSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if (i == EditorInfo.IME_ACTION_SEARCH) {
                     try {
-                        String strSearch = edSearch.getText().toString().trim();
+                        String strSearch = binding.edSearch.getText().toString().trim();
                         Log.d("zzzzz", "onEditorAction: " + strSearch);
                         locationAdapter.getFilter().filter(strSearch);
                     } catch (Exception exception) {
@@ -121,10 +120,10 @@ public class PictureFragment extends Fragment implements UtitInterface {
 
     private void init(View view) {
         dialog = new CustomProgressDialog(getActivity(), 1);
-        edSearch = view.findViewById(R.id.ed_search);
+
 
         // ------- category -----------
-        rcvCategories = view.findViewById(R.id.rcv_categories);
+        RecyclerView rcvCategories = view.findViewById(R.id.rcv_categories);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         rcvCategories.setLayoutManager(linearLayoutManager);
         listCategory = new ArrayList<>();
@@ -132,7 +131,7 @@ public class PictureFragment extends Fragment implements UtitInterface {
         rcvCategories.setAdapter(categoryAdapter);
 
         // --------- image location -----------
-        rcvLocation = view.findViewById(R.id.rcv_location);
+        RecyclerView rcvLocation = view.findViewById(R.id.rcv_location);
         gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         rcvLocation.setLayoutManager(gridLayoutManager);
         listLocation = new ArrayList<>();

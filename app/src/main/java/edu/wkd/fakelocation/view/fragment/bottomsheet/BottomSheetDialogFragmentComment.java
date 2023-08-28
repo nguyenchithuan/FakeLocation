@@ -25,6 +25,7 @@ import edu.wkd.fakelocation.R;
 import edu.wkd.fakelocation.data.api.ApiService;
 import edu.wkd.fakelocation.data.database_local.room.UserDatabase;
 import edu.wkd.fakelocation.data.database_local.shared_preferences.DataLocalManager;
+import edu.wkd.fakelocation.databinding.LayoutBottomSheetFragmentCommentBinding;
 import edu.wkd.fakelocation.models.obj.Comment;
 import edu.wkd.fakelocation.models.obj.Picture;
 import edu.wkd.fakelocation.models.obj.User;
@@ -37,13 +38,9 @@ import retrofit2.Response;
 
 public class BottomSheetDialogFragmentComment extends BottomSheetDialogFragment {
     private Picture picture;
-    private ImageView imgPhoto;
-    private ImageView imgAvt;
-    private EditText edComment;
-    private ImageView imgSend;
-    private RecyclerView rcvComment;
     private List<Comment> listComment;
     private CommentAdapter commentAdapter;
+    private LayoutBottomSheetFragmentCommentBinding binding;
 
     public static BottomSheetDialogFragmentComment newInstance(Picture picture) {
         BottomSheetDialogFragmentComment sheetDialog = new BottomSheetDialogFragmentComment();
@@ -67,23 +64,15 @@ public class BottomSheetDialogFragmentComment extends BottomSheetDialogFragment 
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         BottomSheetDialog bottomSheetDialog = (BottomSheetDialog) super.onCreateDialog(savedInstanceState);
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_bottom_sheet_fragment_comment, null);
-        bottomSheetDialog.setContentView(view);
-//        bottomSheetDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        binding = LayoutBottomSheetFragmentCommentBinding.inflate(getLayoutInflater());
+        bottomSheetDialog.setContentView(binding.getRoot());
         bottomSheetDialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-//        bottomSheetDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        init(view);
-
-
+        init(binding.getRoot());
         return bottomSheetDialog;
     }
 
     private void init(View view) {
-        imgPhoto = view.findViewById(R.id.img_photo);
-        imgAvt = view.findViewById(R.id.img_avt);
-        edComment = view.findViewById(R.id.ed_comment);
-        imgSend = view.findViewById(R.id.img_send);
-        rcvComment = view.findViewById(R.id.rcv_comment);
+        RecyclerView rcvComment = view.findViewById(R.id.rcv_comment);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rcvComment.setLayoutManager(linearLayoutManager);
 
@@ -96,7 +85,7 @@ public class BottomSheetDialogFragmentComment extends BottomSheetDialogFragment 
         Glide.with(getActivity())
                 .load(picture.getLinkImage())
                 .placeholder(R.drawable.img_white)
-                .into(imgPhoto);
+                .into(binding.imgPhoto);
 
         // Image avate comment
         User userLogin = UserDatabase.getInstance(getActivity()).userDao().getListUser().get(0);
@@ -104,11 +93,11 @@ public class BottomSheetDialogFragmentComment extends BottomSheetDialogFragment 
                 .load(userLogin.getLinkAvatar())
                 .placeholder(R.drawable.img_white)
                 .error(R.drawable.img_avt)
-                .into(imgAvt);
+                .into(binding.imgAvt);
         
         getDataComment();
 
-        imgSend.setOnClickListener(new View.OnClickListener() {
+        binding.imgSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 sendCommentPicture();
@@ -134,7 +123,7 @@ public class BottomSheetDialogFragmentComment extends BottomSheetDialogFragment 
 
     private void sendCommentPicture() {
         int idImage = picture.getIdImage();
-        String strComment = edComment.getText().toString().trim();
+        String strComment = binding.edComment.getText().toString().trim();
         String strLinkImage = picture.getLinkImage();
 
         if(strComment.length() == 0) {
@@ -150,7 +139,7 @@ public class BottomSheetDialogFragmentComment extends BottomSheetDialogFragment 
                 CommentResponse commentResponse = response.body();
                 listComment.add(commentResponse.getComment());
                 commentAdapter.setList(listComment);
-                edComment.setText("");
+                binding.edComment.setText("");
                 Log.d("zzzzz", "postComment: " + response.body().toString());
             }
 

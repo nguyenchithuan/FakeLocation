@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import edu.wkd.fakelocation.R;
 import edu.wkd.fakelocation.data.api.ApiService;
+import edu.wkd.fakelocation.databinding.ActivityRegisterBinding;
 import edu.wkd.fakelocation.models.request.RegisterRequest;
 import edu.wkd.fakelocation.models.response.RegisterResponse;
 import edu.wkd.fakelocation.util.CustomProgressDialog;
@@ -22,41 +23,37 @@ import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
     public static final String TAG = "zzzzzzzzzzz";
-    private TextView tv_login;
-    private EditText ed_email;
-    private EditText ed_username;
-    private EditText ed_password;
-    private EditText ed_comfirm_password;
-    private Button btn_register;
     private CustomProgressDialog dialog;
+    private ActivityRegisterBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        binding = ActivityRegisterBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         // Khởi tạo UI
         initUI();
 
-        tv_login.setOnClickListener(view -> {
+        binding.tvLogin.setOnClickListener(view -> {
             Intent intent = new Intent(getBaseContext(), LoginActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slilde_in_right, R.anim.slilde_out_right);
             finishAffinity();
         });
 
-        btn_register.setOnClickListener(view -> {
+        binding.btnRegister.setOnClickListener(view -> {
             registerApp();
         });
     }
 
     private void registerApp() {
-        String strEmail = ed_email.getText().toString().trim();
-        String strUsername = ed_username.getText().toString().trim();
-        String strPassword = ed_password.getText().toString().trim();
-        String strComfirmPassword = ed_comfirm_password.getText().toString().trim();
+        String strEmail = binding.edEmail.getText().toString().trim();
+        String strUsername = binding.edUsername.getText().toString().trim();
+        String strPassword = binding.edPassword.getText().toString().trim();
+        String strComfirmPassword = binding.edComfirmPassword.getText().toString().trim();
         RegisterRequest dataRegister = new RegisterRequest(strEmail, strUsername, strPassword);
         dialog.show();
 
@@ -89,13 +86,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        tv_login = findViewById(R.id.tv_login);
-        ed_email = findViewById(R.id.ed_email);
-        ed_username = findViewById(R.id.ed_username);
-        ed_password = findViewById(R.id.ed_password);
-        ed_comfirm_password = findViewById(R.id.ed_comfirm_password);
-        btn_register = findViewById(R.id.btn_register);
-
         dialog = new CustomProgressDialog(RegisterActivity.this, 1);
     }
 
